@@ -1,0 +1,2846 @@
+0.0,Hello and welcome to the UCL
+11.6,and DeepMind lecture series.
+14.6,"My name's Felix Hill, and I'm"
+16.88,going to be talking to you about
+19.32,deep learning and language
+21.88,understanding. So here's an
+25.080000000000002,overview of the structure of
+27.36,today's talk. It's going to be
+28.96,divided into four sections. So
+31.52,"in the first section, I'll talk"
+33.32,a little bit about neural
+34.8,computation in general and
+36.92,"language in general, and then"
+39.0,give some idea of why neural
+42.0,"computation, deep learning and"
+43.72,language might be an appropriate
+46.8,fit to come together and produce
+49.32,the sort of improvements and
+51.96,impressive language processing
+53.400000000000006,performance that we've seen over
+54.44,the last few years. In the
+56.92,"second section, I'll focus in on"
+59.36,one particular neural language
+61.480000000000004,"model, which I think is quite"
+63.36,representative of a lot of the
+64.56,principles that govern all neural
+66.64,language models. And that model
+68.08,"is the Transformer, which was"
+69.84,released in 2018. And then in
+74.08,"section three, I'll go a bit"
+76.68,deeper into a particular
+78.2,"application of the Transformer,"
+80.04,that's the well-known BERT
+81.28,model. And BERT in particular is
+84.08,an impressive demonstration of
+85.64,unsupervised learning and the
+87.28,ability of neural language
+88.6,models to transfer knowledge
+90.92,from one training environment to
+93.92,another. And then in the final
+97.12,"section, we'll take a bit more"
+99.12,of a look towards the future of
+100.84,language understanding and deep
+102.68,"learning. And to do that, we'll"
+105.24000000000001,delve into some work that's been
+106.8,done at DeepMind on grounded
+108.44,"language learning, where we"
+110.76,study the acquisition of
+112.52,language in deep neural networks
+114.52,that have the ability to
+115.52,interact and move around
+117.75999999999999,simulated environments. So
+121.0,that's the overall structure.
+123.03999999999999,It's important to add that of
+124.19999999999999,"course, natural language"
+125.44,processing is an enormous field
+127.44,and there are many things that
+128.88,I'm not going to have the time
+130.0,to talk about during this
+131.07999999999998,lecture. So some of the most
+132.68,important ones are things like
+133.92,sequence to sequence models and
+135.8,specific applications of deep
+137.35999999999999,learning to neural machine
+138.72,translation. Also speech
+141.32,recognition and speech
+142.4,synthesis are really important
+143.88,applications that I won't have
+145.16,time to talk about. And then
+146.79999999999998,"there's many NLP tasks, which I"
+148.64,also won't get the chance to
+150.48,delve into from machine
+151.92,comprehension and question
+152.79999999999998,answering and dialogue. And even
+154.24,in grounded language learning in
+155.44,"the last section, I won't get"
+157.04,the chance to go into things
+158.24,like visual question answering
+159.48,and video captioning. So in
+161.07999999999998,"short, the important thing to"
+163.2,take away is that I'm not going
+164.88,to have the chance to cover all
+166.16,aspects of natural language
+167.2,processing. I'm going to just
+168.51999999999998,talk about a few focused areas
+171.0,and that's because I think they
+172.28,they're quite representative and
+173.56,they hopefully convey the key
+174.72,concepts. It's not because I
+176.56,think they're more important or
+178.2,more valid than any other areas.
+180.44,"Yeah, cool. So let's start off"
+185.04,with a bit of background about
+186.4,deep learning and language and
+187.8,how they might fit together. Of
+190.2,"course, where we are now is that"
+193.04,there's been a load of
+193.8,impressive results relating deep
+195.6,learning to natural language
+196.84,processing in the last few
+198.16,years. So you may have heard of
+199.64,models like GPT2 or BERT or
+204.44,"WaveNet, which was developed in"
+205.79999999999998,DeepMind and all of these models
+207.83999999999997,have done really impressive
+209.32,things with respect to the
+210.79999999999998,various aspects of language
+212.07999999999998,processing that they focus on.
+213.67999999999998,So GPT2 as a language model is
+216.16,now able to produce long
+217.72,"streams of text, which look like"
+219.23999999999998,plausible stories and BERT has
+221.64,led to very large improvements
+224.35999999999999,on many language classification
+226.27999999999997,tasks. And of course WaveNet has
+228.24,led to fantastic performance in
+231.0,speech synthesis where we're now
+233.20000000000002,able to synthesise voices for
+235.04000000000002,various speech applications with
+237.44,much more fidelity than was
+238.60000000000002,previously possible. So it's
+240.44,really like an exciting era for
+242.88,natural language processing and
+245.24,we're moving at a rate of
+246.16000000000003,"progress, which is possibly"
+247.76000000000002,"unprecedented, at least in"
+249.60000000000002,recent years. So if you think
+253.28,about all the sort of panorama
+254.68,"of different things, you might"
+255.64000000000001,be able to apply language models
+257.2,or language processing technology
+258.59999999999997,too. Like to a much greater
+262.56,extent than at any point in the
+263.71999999999997,"past, neural computation and"
+266.0,deep learning plays a role in
+267.8,those systems. So on the left we
+269.71999999999997,have systems which are almost
+270.76,now entirely based on neural
+272.24,networks from machine
+273.24,translation systems to speech
+274.84,synthesis systems and speech
+276.36,recognition. And then on the
+278.48,"right here, it's important to"
+279.76,note that there are still many
+280.91999999999996,applications which do language
+282.52,"processing, but don't use deep"
+285.59999999999997,learning or neural networks for
+286.92,all of their computation or even
+289.2,at all. So things like home
+290.88,"assistance, which you might have"
+293.04,to provide specific pieces of
+294.44,"information from the internet,"
+296.56,we're still a long way from
+297.92,building systems like that in an
+300.08000000000004,end to end fashion in deep neural
+301.52000000000004,"networks. Having said that, the"
+304.56,balance of this particular scale
+306.72,has moved a lot over the last
+308.24,few years. And it's certainly a
+309.76,trend towards more applications
+312.72,of neural computation and neural
+314.12,networks in language processing
+315.52,applications. And it's not just
+317.44,in practical applications. In
+319.88,the slightly more focused world
+321.15999999999997,"of research, we see a similar"
+324.4,trend. So this is data from 2010
+328.88,to 2016 and it covers
+332.08,submissions to two of the main
+333.96,"language processing conferences,"
+335.84,ACL and EMNLP. And on the chart
+339.12,you just see the number of
+340.91999999999996,papers published at those
+342.2,conferences for which the word
+344.68,deep or neural is found in the
+346.36,title. And you can see that back
+348.36,"in 2010, there was close to, or"
+351.04,effectively zero papers with
+352.64,those words in the title. But by
+355.16,"the time we got to 2016, this"
+357.12,number had scaled up rapidly.
+359.04,"And of course, there's a very"
+360.04,good chance that if we looked at
+362.12,"the data up to 2020, we would"
+364.16,just expect this trend to
+365.36,have continued in that time. And
+369.0,it's obviously not just the
+370.04,"number of publications, but the"
+372.68,effective quality of systems and
+375.0,"models, which seems to be"
+376.12,improving over this time. So
+378.04,here's just a snapshot in time
+380.96,in 2018-2019 of how well the
+384.12,best model was able to perform
+386.2,on the GLUE benchmark. So the
+388.44,GLUE benchmark just intended to
+391.96000000000004,be a representative language
+393.2,classification challenges.
+395.16,Things like reading a couple of
+397.12,saying whether one of them
+398.64,"entails another one, or maybe"
+400.84000000000003,classifying them as positive
+402.4,"sentiment or negative sentiment,"
+403.84,things like that. So our ability
+406.4,to do those sorts of things
+407.44,automatically is rapidly
+409.0,increased according to this
+410.52,"benchmark, just between 2018 and"
+412.67999999999995,"19, you can see the rate of"
+413.88,improvement from under 60%
+415.4,performance to over approximately
+417.79999999999995,"85% performance. And again, on"
+419.4,"this task, on this benchmark,"
+422.08,the performance has just
+423.03999999999996,increased and increased up to
+424.52,the present day. So this is a
+428.59999999999997,sort of taken together a bunch
+430.64,"of evidence that, you know, deep"
+432.36,learning has really been able to
+434.28,improve performance on a bunch
+436.52,of language processing
+437.4,applications. And I think
+439.84,"looking at that evidence, it"
+440.88,raises the question of why deep
+443.4,"learning and models, which have"
+445.12,this neural computation at the
+446.4,heart of their processing have
+449.12,been able to be so effective in
+450.56,language processing. What is it
+452.0,about deep learning and what is
+453.52,"it about language, which has"
+456.44,sort of allowed this sort of
+458.08,effect to take place? And of
+461.47999999999996,"course, if we can answer that"
+462.68,"question, if we can understand"
+463.96,"that, then that can help us to"
+465.56,think a little bit about ways to
+467.24,improve things further. But of
+469.84,"course, in order to understand"
+471.08,"that, we really need to think a"
+473.88,bit about language. So in the
+475.47999999999996,"other lectures in this series, I"
+477.71999999999997,"think you've had a, we would"
+478.79999999999995,have had a very comprehensive
+479.96,introduction to deep learning
+482.12,neural networks and the
+484.28,principles of neural
+485.12,"computation. In this lecture, I"
+488.0,would like to just spend a bit
+488.88,of time to think about language
+490.8,"in itself, so we can start to"
+492.64,think about why these two
+494.32,paradigms fit well together. So
+498.52,"the first thing about language,"
+500.6,it's often said that language is
+502.28,a process of manipulating
+504.36,symbols or that language
+506.44,processing involves symbolic
+509.32,data in operations on symbols.
+511.56,"So you know, if we had a"
+515.32,sentence coming into a network
+517.32,and a sentence coming out of a
+518.24,"network, then one"
+520.8000000000001,characterisation of that problem
+522.5200000000001,is from mapping symbols to
+524.0400000000001,"symbols, these very discrete"
+526.7600000000001,"units. But of course, those who"
+530.0400000000001,think a little bit more about
+531.24,language specifically have many
+533.88,reasons to believe that
+534.84,individual words that we might
+536.24,be passing to these models don't
+537.96,seem to behave like discrete
+539.32,symbols exactly. So let's just
+541.9200000000001,consider an example of the word
+543.5200000000001,face. If we think about the word
+545.48,"face, we can find it in many"
+546.96,different contexts in language.
+548.76,"So in the sentence, did you see"
+550.4000000000001,the look on her face? We could
+553.4000000000001,see the clock face from below.
+556.52,It could be time to face his
+558.12,"demons, or there are a few new"
+560.64,faces in the office today. And
+562.84,"those, we will, as we think"
+564.72,about those uses of the word
+565.9200000000001,"face, we get some sense that"
+568.2,they are different in meaning or
+571.52,different in usage. And we call
+572.84,these differences word senses.
+574.68,But the important thing to note
+576.2399999999999,about the different senses of
+577.92,the word face is that they're
+579.8399999999999,not entirely different. So it's
+583.56,not the case that we should
+585.28,model these as entirely
+587.3599999999999,"independent symbols, which we"
+590.3199999999999,would like to pass through a
+591.3199999999999,"model. In actual fact, what we"
+593.4399999999999,"find when we, when we delve into"
+594.9599999999999,the meaning is that these
+596.28,meanings have certain aspects in
+597.88,"common, but they're just not"
+599.7199999999999,identical. So if we think about
+601.52,"the first case of face, we might"
+603.36,think of that as the most
+604.8000000000001,prototypical meaning. And of
+607.12,"course, that's just the face"
+608.6800000000001,that you can see in front of you
+609.8000000000001,"now, the face, which is the most"
+611.72,important side of somebody's
+612.88,"head, the side for the eyes and"
+614.32,"the nose. So yeah, as well as"
+617.16,being the most important side of
+618.76,"some, somebody, it's something"
+620.5600000000001,that represents them. And it's
+622.4,something which is used to
+623.84,inform or communicate other
+626.04,people. So if we think of all of
+628.12,those as sort of features or
+629.32,properties of this sense of
+630.96,"face, then when we think about"
+633.04,"the sense, the clock face, we"
+636.0,see that it actually shares some
+637.48,"of those properties, but not all"
+639.12,of them. So it's also the most
+641.36,"important side of the clock,"
+643.36,clock face. And it's also the
+644.88,side that's used to communicate
+646.56,or inform others by conveying
+649.36,some information. And then if we
+651.5999999999999,think about this notion of face
+653.16,"as a verb, to face your demons,"
+655.8,"again, there's this idea that"
+657.4,"when you face somebody, you"
+659.4399999999999,point your literal face
+661.56,directly at them. So it conveys
+664.68,this same sense of the pointing
+666.2399999999999,aspect of face that's also
+668.56,conveyed in the core prototype.
+670.56,"And then finally, if we think"
+672.8399999999999,about the idea of new faces in
+674.88,"the office today, then it"
+676.7199999999999,conveys this sense of identity
+678.56,"yourself, which is also"
+679.88,potentially shared by the core
+681.68,meaning of face. So this example
+684.16,"shows, and you will see these"
+685.8399999999999,effects if you look at many
+686.92,"other words, that rather than"
+689.4,"discrete word senses, which are"
+691.16,"orthogonal to each other, we"
+693.16,might be better off modelling
+694.56,this discrepancy in meaning
+696.68,within individual words as
+699.24,"operations that can interact,"
+701.24,but are not necessarily the
+703.04,"same. Okay, now when we think"
+707.24,about the fact that each word
+708.56,could have many of these
+709.6,"different senses, how could a"
+711.12,processor possibly make sense of
+712.92,a sentence? How could it
+714.1999999999999,possibly disambiguate the
+715.48,possibilities for the different
+716.76,senses in order to come to one
+718.6,coherent understanding of a
+720.44,"phrase? Well, one of the ways in"
+722.44,which we do that is of course by
+723.7600000000001,using additional information
+725.32,separate from that particular
+726.48,word. So we use the wider
+728.1600000000001,context. And to give just a
+733.12,small example of how our
+734.5200000000001,language processing really
+735.8800000000001,"depends on context, consider"
+737.8800000000001,this example. It actually goes
+739.6400000000001,back to Rumelhart in the mid to
+741.32,late seventies. So he noticed
+744.08,that if we had some handwriting
+745.4000000000001,"like this, Jack and Jill went up"
+746.7600000000001,"the hill, we can read it very"
+748.08,"quickly. And in the bottom case,"
+750.12,the pole vault was the last
+751.28,event. We can read that just as
+752.6,easily. But if you look at the
+754.68,"areas highlighted in red here,"
+757.16,you'll see that there's
+760.0,actually a character which is
+761.44,identical in both cases. And
+763.96,it's arguably midway between an
+767.72,E V and a W. But when we read
+770.92,"the sentence seamlessly, we just"
+773.44,"interpret this character, which"
+775.4,could potentially be ambiguous
+778.0,in the way which fits most
+779.32,naturally with the whole of the
+782.6,wider sentence around it. So
+785.2800000000001,this sort of example intuitively
+787.2800000000001,gives us some justification for
+788.96,"thinking, well, maybe it's the"
+790.36,interactions between the
+791.72,individual tokens that we're
+792.88,looking at and all of the things
+794.48,"around them, which actually"
+796.0400000000001,allow us to solve the mystery of
+798.4000000000001,which possible sort of sense of
+800.32,a word we might be looking at at
+801.6400000000001,any given one time. And in
+804.8000000000001,"particular, what we probably do"
+806.96,"according to this example, at"
+808.08,"least, is think about the whole"
+810.72,sentence and think what's the
+811.84,most likely interpretation of
+813.48,the whole sentence. And that in
+815.24,itself informs the individual
+817.2800000000001,interpretation of the particular
+819.1600000000001,characters where ambiguities
+821.32,might be. Another classic
+824.72,example of this phenomenon can
+826.44,be simply gained by reading the
+828.88,"following symbol on your screen,"
+831.72,"the following image, by reading"
+833.36,it across or down. So obviously
+834.8000000000001,"as we read it down, the"
+836.32,character at the very centre of
+837.84,the image looks very much like a
+839.6800000000001,"13, but as we read it across, it"
+841.96,looks clearly like a B. And this
+843.72,"tells us the extent to it, even"
+845.36,in our very early perceptual
+846.76,"processes, the context is"
+848.72,informing the ways in which we
+850.88,map what we're seeing into
+853.12,things further inside our
+854.32,"processor, which might be our"
+857.24,memories of existing symbols
+859.0,like 13 or B in this case.
+864.44,So we've seen then that words
+865.56,are not necessarily best modelled
+868.0,as discrete symbols. And we've
+869.68,also seen that in order to
+873.52,decide what naturally fit
+874.92,"between these word-like things,"
+876.8,we better off be considering
+878.68,wider context in order to
+880.4,modulate those computations.
+883.0799999999999,Another very important fact
+884.3599999999999,about language is that the
+885.3599999999999,"important interactions, which we"
+887.56,"may well need to model, can very"
+890.8,often be non-local. So it can be
+892.8,things that are not very close
+894.56,"together, which we have to"
+896.56,capture the interactions
+897.76,between. Classic example is
+900.0,"sentences a bit like this, the"
+902.0799999999999,man who ate the pepper sneezed.
+904.4399999999999,So even though the pepper
+906.0,"sneezed, that part of the"
+908.0,"sentence is contiguous, we, as"
+910.64,"we read the sentence, know that"
+912.0,it's in fact the man who
+914.0,sneezed. We know that this sort
+915.76,of image characterises what
+918.04,happened when we read this
+919.52,sentence and that there isn't
+921.2399999999999,necessarily anything to do with
+923.04,pepper to be seen apart from
+924.8,the fact that that's something
+925.88,that the man just ate. So this
+930.4399999999999,tells us that it can be things
+931.8,at one end of the sentence and
+933.64,things at the very other end of
+935.04,"the sentence, which must be"
+936.52,considered to interact in order
+938.8399999999999,for us to form the most
+941.36,satisfactory meaning when we
+943.36,read sequences of words.
+946.0799999999999,"However, there are of course"
+948.0,other factors at play. So
+949.88,"consider the sentence, the cat"
+951.84,who bit the dog barked. Now it's
+954.36,actually the case that people
+955.8000000000001,are much slower to make sense of
+957.52,this sentence than the man who
+959.72,"ate the pepper sneezed, even"
+961.84,though they have exactly the
+962.96,same overall structure and
+965.0,length. Eventually upon
+968.0400000000001,"thinking about it, we do"
+969.52,"realise that in the sentence,"
+970.96,"the cat who bit the dog barked,"
+973.32,"it's actually unusually the cat,"
+975.0,which does the barking. But our
+977.12,difficulty to process this also
+979.0,tells us that many factors are
+980.52,"at play. So in particular, it"
+982.68,seems to be that the three word
+985.72,"phrase, the dog barked, seems to"
+987.84,capture our attention. And we
+990.48,sort of have an urge to consider
+992.0,that it's actually the dog
+993.12,barking in a way that's more
+996.4399999999999,"strong than in the other case,"
+998.16,where we don't have such a
+999.0799999999999,strong urge to consider that
+1000.0799999999999,it's the pepper that sneezed.
+1002.04,"Now, where might those urges"
+1003.36,come from? And can we capture
+1005.12,those in our computational
+1006.16,"models? Well, these sorts of"
+1008.6,examples seem to tell us that
+1010.4,those urges can come from our
+1011.8,underlying understanding of the
+1013.28,"world, our understanding of the"
+1014.8,"meaning of dog and barking, and"
+1016.8,the fact that those are very
+1017.9599999999999,likely to come together and
+1019.88,describe a particular situation.
+1022.0799999999999,Whereas our knowledge of peppers
+1024.6,will tell us that they don't
+1025.52,"typically sneeze. And therefore,"
+1028.0,we don't think that the pepper
+1029.08,sneeze is very likely state of
+1030.92,affairs. And we look for other
+1033.32,ways to make sense of the
+1035.16,sentence and the correct way of
+1037.8,making sense of the sentence in
+1039.4,"fact, is more salient to us as"
+1042.0,we process it. So that's just a
+1044.44,thought to bear in mind when
+1045.3200000000002,we're thinking about optimal
+1046.76,processes of language in deep
+1048.68,learning models. And then
+1051.76,there's another final point. So
+1053.2,lots of people who consider and
+1054.8000000000002,"talk about language,"
+1056.2,particularly in the wider
+1057.1200000000001,"machine learning community,"
+1059.44,consider language to be
+1060.52,compositional in the sense that
+1063.3600000000001,the meaning can be computed
+1064.68,simply by elegant operations on
+1068.56,the individual parts. But when
+1071.08,we actually consider how
+1072.08,"meanings combine, the picture is"
+1074.9199999999998,a little bit less clear. And it
+1076.76,seems very likely that whatever
+1078.8,we do to combine meanings very
+1081.24,well ought to take into account
+1083.6799999999998,exactly what those meanings are.
+1085.9199999999998,And it shouldn't operate
+1087.6799999999998,arbitrarily on any different set
+1089.6,of inputs. It should be a
+1090.9199999999998,function which really takes into
+1092.8799999999999,account the individual meanings
+1094.2,in a particular scenario before
+1096.32,deciding the best way to combine
+1097.88,those meanings. Just to justify
+1101.3600000000001,"that, consider the following"
+1102.92,example. Here's a characteristic
+1105.8000000000002,image of something that's red.
+1108.44,"But if you look at red wine,"
+1110.7600000000002,none of us would find that
+1111.72,"unusual, but of course the"
+1113.2,colour of that wine is much
+1114.64,darker. It could even be black
+1117.5200000000002,in that particular image. And
+1119.3200000000002,here's a red pen. Our experience
+1122.3600000000001,of pens tells us that even red
+1124.2800000000002,pens needn't be at all red when
+1125.8000000000002,we look at them from afar. It's
+1127.44,only the ink that comes out of
+1128.8400000000001,them that needs to be red. So
+1131.68,even in something as simple as
+1132.96,combining a colour adjective
+1134.92,"with a noun, there's all sorts"
+1137.24,of factors at play telling us
+1138.52,exactly how those meanings
+1139.92,combine. They don't seem to be
+1142.24,equivalent from one pair of
+1143.72,words to the next. Things get
+1147.24,even more wacky in certain
+1148.48,cases. So here's a classic
+1150.0800000000002,example about pets. If we think
+1152.8400000000001,"about a prototypical pet, it's"
+1154.44,probably black or white or
+1155.84,"brown, because obviously dogs"
+1158.12,and cats have those sorts of
+1159.24,"colours. If we think about fish,"
+1162.32,then maybe a classical fish we
+1163.8799999999999,think about would be silver or
+1165.84,"grey, slippery in that way. But"
+1168.1999999999998,"when we think about pet fish,"
+1171.1599999999999,this sort of magic seems to
+1172.24,happen where our typical pet
+1175.4399999999998,fish has lots of bright colours.
+1177.1599999999999,"It could be orange, green or"
+1178.1999999999998,purple or yellow. So something
+1180.6399999999999,seems to have happened in our
+1181.76,mind to allow these strong
+1183.9199999999998,features to come into the
+1185.12,"representation of pet fish,"
+1186.8,which didn't play a strong role
+1188.56,in our representations of either
+1190.52,pet or fish. This doesn't always
+1193.56,"happen when we combine words,"
+1194.9599999999998,but it does sometimes. Another
+1197.32,"example would be this, our"
+1199.32,"representation of plant, which"
+1201.4399999999998,might be typically something
+1202.84,like that. And our
+1203.8799999999999,"representation of carnivore,"
+1205.52,which might be a bit like that.
+1207.56,But our representation of
+1208.56,carnivorous plant has this
+1210.32,additional feature about eating
+1213.04,insects. So these are kind of
+1217.6399999999999,wacky effects of how meanings
+1219.44,interact when two words come
+1221.96,together. And it's not
+1225.44,necessarily easy to explain them
+1227.48,in a model which treated every
+1229.76,pair of words fed into that
+1231.44,model with exactly the same
+1233.12,function to combine their
+1234.68,meanings. It very much seems to
+1236.68,me that what's instead happening
+1238.48,is that whatever function is
+1239.56,combining the meanings is taking
+1240.96,into account the individual
+1242.6,meanings of the components going
+1243.9599999999998,into that function. And
+1245.9599999999998,"additionally, that function may"
+1248.9199999999998,well need to take into account
+1250.56,our wider knowledge of typical
+1252.6399999999999,things we might encounter in the
+1253.8,world and how their properties
+1255.9599999999998,might fit together under the
+1257.9199999999998,constraints of the world as we
+1259.3999999999999,"know it. So just to summarise,"
+1263.6,we've seen in this section that
+1266.24,words have many related senses
+1268.56,and that they're not necessarily
+1270.24,characterised as sort of
+1273.16,perfectly idealised discrete
+1275.4,symbols. We've also seen that in
+1278.56,order to somehow find which of
+1280.92,those senses is most relevant in
+1282.44,"a particular scenario, some of"
+1285.48,the ways to settle that problem
+1287.08,might require us to look at the
+1288.24,wider context around that word.
+1291.36,"And in many cases, we may need to"
+1293.16,look a long way from the
+1295.76,particular word to satisfactorily
+1297.88,disambiguate the uncertainty
+1299.64,that we have at any particular
+1300.76,"point. And finally, when we're"
+1303.16,thinking about building models
+1304.72,of how word meanings might
+1305.8400000000001,"combine, we've seen that"
+1307.76,functions that combine meanings
+1309.8400000000001,will probably need to take into
+1311.2,account what the inputs to those
+1312.8400000000001,functions are in order to come
+1314.44,up with the best bespoke way of
+1316.2,combining for those particular
+1317.76,words. And we've even suggested
+1320.6000000000001,that they may well also need a
+1322.3600000000001,wider sense of how the world
+1324.2,works and how things can
+1325.24,naturally fit together in order
+1326.92,to eventually arrive at the
+1328.68,optimal representation for the
+1330.5600000000002,combination of meanings in each
+1332.2,particular case. So in the first
+1335.44,"part, we talked about particular"
+1338.0,aspects of language and
+1339.8400000000001,particular aspects of neural
+1340.92,"computation that have, that seem"
+1344.76,to fit together in a
+1345.8400000000001,"particularly appropriate way,"
+1348.76,such that they define certain
+1351.52,ways in which a computational
+1352.88,model might need to behave in
+1354.96,order to capture the ways that
+1356.68,meaning works in language. So in
+1359.48,"this section, we're going to"
+1360.8400000000001,talk much more concretely about
+1362.8400000000001,"a specific model, which was"
+1364.92,published just a couple of years
+1367.04,ago and has had an incredible
+1369.52,impact on a large number of
+1372.2,natural language processing
+1373.28,problems from machine
+1374.88,translation to sentence
+1377.44,classification and essentially
+1379.3200000000002,any problem that requires a
+1380.52,model to process a sentence or a
+1383.8400000000001,passage of multiple sentences
+1385.64,and compute some sort of
+1387.24,behavioural prediction based on
+1388.72,that. So it's fair to say that
+1390.92,"for any problem of that form,"
+1393.3200000000002,transformer is probably the
+1394.68,state of the art method or some
+1396.5200000000002,variant of a transformer is the
+1398.48,best way for the model to learn
+1401.0800000000002,and to learn to extract the
+1402.2800000000002,signal from those sentences in
+1403.8000000000002,order to make optimal
+1404.68,protections. And in this section
+1408.16,I'll talk about the details of
+1409.16,the transformer and just refer
+1411.5600000000002,back to those aspects of
+1412.68,language processing that we saw
+1413.8400000000001,"in the first section, which is"
+1415.32,in order to give some intuition
+1416.6,about why the transformer might
+1418.1599999999999,be so effective when it
+1419.28,processes language. So just
+1423.8799999999999,here's credit to the authors of
+1425.04,the transformer from Google
+1427.04,Brain and collaborators and the
+1429.9199999999998,paper is obviously available for
+1431.8,you to find out the fine details.
+1434.12,But I'll give a broad overview
+1435.4399999999998,and starting in particular with
+1436.9199999999998,the first layer. So the
+1439.28,transformer contains a
+1441.52,distributed representation of
+1443.1599999999999,"words in its first layer, which"
+1445.08,is something it has in common
+1446.28,with almost any neural language
+1448.08,models now. And what do I mean
+1450.9199999999998,by a distributed representation
+1452.4399999999998,"of words? Well, the first thing"
+1454.6399999999999,that we do when we construct a
+1456.0,neural language model is we have
+1457.6799999999998,to determine what is the
+1459.36,vocabulary on which the model
+1462.28,is going to operate. So what I
+1465.1999999999998,mean by that is we do need to
+1466.9199999999998,"chop up the input, which the"
+1469.8799999999999,model sees into some sort of
+1471.9199999999998,units in order to pass them to
+1473.6,"the model. Now, if you think of"
+1474.92,"a large page of text, those"
+1476.76,units could be individual
+1478.5600000000002,"characters. In an extreme case,"
+1480.52,they could be individual pixels
+1482.76,"if we considered the text, an"
+1485.6000000000001,"actual image. But in general,"
+1487.68,with language processing
+1488.5600000000002,"applications, because we have"
+1489.72,"text stored in digital form, we"
+1492.3200000000002,don't need to go through that
+1493.52,phase and subject our model to
+1495.2,having to learn to process
+1496.24,pixels. So we have to make a
+1498.48,decision about what are the
+1500.1200000000001,units that we actually pass to
+1501.4,the model. And in most
+1503.64,applications of neural language
+1505.2,"models these days, that can"
+1506.5200000000002,"either be character level,"
+1508.68,which is where we pass each unit
+1511.24,"as an individual letter, or it"
+1514.6000000000001,"can be word level, which is"
+1516.5200000000002,where we split the input
+1518.76,according to white space in the
+1520.48,text. And then we pass each of
+1522.4,the individual words to the
+1523.5200000000002,model as discrete different
+1527.0800000000002,"symbols. But of course, as we've"
+1530.76,talked about in the last
+1531.84,"section, a model which just takes"
+1534.48,symbols and treats them as
+1535.6399999999999,symbols might not be optimal for
+1537.8,capturing all of the aspects of
+1539.28,meaning that we see in natural
+1540.6,language. So instead of doing
+1543.48,"that, the developers of neural"
+1545.28,language models have come up
+1546.36,with a procedure which allows
+1548.04,the model to be more flexible in
+1549.48,which it represents in the ways
+1551.3999999999999,in which it represents words.
+1553.56,And that process is something
+1554.6,like the following. So let's say
+1556.12,we do take the decision to chop
+1558.0,up our input text according to
+1560.88,individual words. So what we
+1563.7600000000002,"should, what we first do is we"
+1565.0800000000002,consider all of the words that
+1566.24,we want our model to be aware
+1567.5200000000002,"of, and we let that define the"
+1569.0,total vocabulary of the model.
+1571.2800000000002,"So to get such a list, we might"
+1572.68,scan hundreds of thousands of
+1574.92,pages of text and count all the
+1576.2,words that we find there. And
+1577.7600000000002,then we can take some subset of
+1579.24,the words which appear the most
+1580.4,"frequently, or alternatively, if"
+1582.0,we have lots of memory and a
+1583.0400000000002,"really big model, we can take"
+1584.4,all of the words and allow all
+1585.8400000000001,of those to be in the vocabulary
+1587.24,of the model. What we typically
+1588.8000000000002,do in a neural language model
+1590.04,then is pass each of the words
+1592.76,to an input layer. And that
+1594.96,input layer contains a
+1596.04,"particular unit for each,"
+1598.56,corresponding to each of the
+1599.6399999999999,words in the vocabulary of the
+1600.92,"model. But importantly, those"
+1603.32,units are then connected to a
+1605.36,set of weights. And it's always
+1607.76,each unit is connected to the
+1609.2,same number of weights and those
+1611.1599999999999,weights connect to a set of
+1612.92,units of a particular dimension.
+1615.8799999999999,Now that dimension we can think
+1617.24,of as the word representation
+1618.92,dimension or the word embedding
+1620.72,dimension. And when the model
+1623.28,"sees a given word, we turn on"
+1625.4,the unit corresponding to that
+1627.24,word and we leave all of the
+1629.5600000000002,other units as zero. So we put
+1631.1200000000001,an activation of one on unit
+1633.52,"corresponding to the word, leave"
+1635.04,all of the other weights as zero
+1636.96,and we've marked those weights
+1638.16,in this diagram here with
+1639.64,yellow and light blue shows the
+1642.44,space occupied by the whole
+1643.8000000000002,layer of input weights for the
+1645.0,"model. So in this case, the"
+1647.64,"model sees the word the, we turn"
+1650.3200000000002,on the weights corresponding to
+1651.5600000000002,"the word the and of course,"
+1653.72,because we activate the unit
+1655.88,with strength of one and we
+1657.72,activate each of the units at
+1659.72,"the output of the next layer,"
+1661.3600000000001,which is corresponding to this
+1662.68,black box around the grey
+1664.5600000000002,"rectangle, we activate each of"
+1666.96,the units there according to
+1668.8000000000002,exactly what the weight is that
+1671.92,"went from the word, the unit"
+1673.2800000000002,"corresponding to the, to this"
+1674.8400000000001,distributed layer. So
+1676.24,effectively we get a
+1677.72,"representation in that, in that"
+1679.72,layer with the black box around
+1681.6,"the rectangle, we get a"
+1683.04,representation corresponding to
+1684.68,"the word the, but that"
+1685.84,representation is actually a
+1687.76,"finite number of weights,"
+1689.32,floating point valued weights.
+1692.44,And if we do this for all the
+1693.52,"words, we get a different"
+1694.48,representation for all of the
+1695.64,words. So we can unroll the input
+1698.04,"and actually do, repeatedly do"
+1699.92,this and get a sequence of
+1702.68,vectors of floating point values
+1705.12,for each of the words in our
+1706.32,input. And those vectors live in
+1708.12,a space and importantly that
+1710.08,space has certain geometric
+1712.0,properties. So we might find
+1714.2399999999998,"that it, representing words in a"
+1716.6399999999999,space like that allows words to
+1719.9199999999998,move together in the space if
+1722.36,it's useful for the model to
+1723.6,represent them as somewhat
+1725.2399999999998,similar and to move further away
+1727.2399999999998,in that space if it's useful for
+1728.8799999999999,the model to represent them as
+1730.9199999999998,"different, because remember with"
+1732.3999999999999,"that propagation, all of the"
+1734.08,weights in this first layer of
+1735.3999999999999,the model are going to be
+1736.3999999999999,trained to optimise the model to
+1738.08,achieve its objective. So this
+1739.84,gives the model the flexibility
+1741.08,to move its representation of
+1742.76,individual words around as it
+1745.04,sees fit in the best way to
+1746.9199999999998,achieve its objective. So just
+1750.6799999999998,"to recap, this is the first"
+1752.32,layer of many neural language
+1753.56,"models, including the"
+1754.76,"transformer, and it contains"
+1756.1999999999998,quite a lot of weights. So if we
+1758.6,have a total of capital V words
+1761.52,"in our vocabulary, and if"
+1763.44,capital D is the dimension of
+1765.52,the vector that we're going to
+1766.3200000000002,represent each of these words
+1768.48,"with in a floating point vector,"
+1771.16,then the total number of weights
+1772.68,that we have in the first layer
+1773.6000000000001,is V multiplied by D. And we end
+1777.0800000000002,up with a D dimensional
+1779.24,Euclidean space with which to
+1781.28,represent these input units in
+1783.0800000000002,the model. Now this idea of
+1787.0800000000002,representing words or letters or
+1789.3600000000001,whatever we take as the input
+1790.64,units to a model in some sort of
+1792.72,"high dimensional floating value,"
+1794.76,real valued vector space is
+1796.76,actually quite an old idea. If
+1799.24,"we go back to 1991,"
+1800.56,Michael Eynon and Dyer produced
+1802.6000000000001,"a language, a neural language"
+1804.0,model with much less
+1806.32,computational power than
+1807.32,"current models have, but it's"
+1809.56,still tried to execute this
+1811.52,principle of representing input
+1813.08,words in this distributed
+1814.68,geometric space. And it was able
+1816.8,to exhibit certain types of
+1818.4,interesting generalisation when
+1820.32,trained on real text that are
+1822.24,model which represented words as
+1824.1200000000001,individual discrete symbols
+1825.68,wouldn't be able to represent or
+1828.16,"achieve. And of course, perhaps"
+1830.68,the most famous example of this
+1832.52,demonstration came from a very
+1834.1200000000001,famous paper in which Geoff
+1835.76,Elman introduced the recurrent
+1837.84,neural network to the wider
+1839.08,"community. And in this paper,"
+1842.1200000000001,Elman analysed the distributed
+1844.16,representations corresponding to
+1846.0,lots of different words as he
+1847.96,trained the model on sequences
+1850.04,"of sort of subject, verb,"
+1853.96,"objects, star sequences of"
+1856.04,natural language style snippets.
+1857.8,And the objective of this model
+1858.8799999999999,was just to represent a sequence
+1860.96,of words such that the model was
+1862.28,able to optimally predict the
+1863.6399999999999,next word with as much accuracy
+1865.44,as possible. And what Elman
+1869.68,found when he analysed the way
+1871.28,that the model was
+1872.6399999999999,representing these words
+1873.72,internally was that of all the
+1875.84,"words in his vocabulary, they"
+1877.1599999999999,started to cluster together in
+1878.68,"this geometric space, such that"
+1880.52,words with similar meanings came
+1881.92,together. And importantly also
+1884.3600000000001,words with similar syntactic
+1886.28,"roles, so things like verbs or"
+1888.28,nouns or subjects or objects
+1891.1200000000001,also started to cluster together
+1892.4,in the space. And this tells us
+1894.52,"that neural language models, as"
+1896.4,they experience more and more
+1897.64,"text, start to slowly infer the"
+1900.28,underlying structures in
+1901.4,"language, which we might be able"
+1903.4,"to perceive as language users,"
+1905.16,"such as subject, object, verb,"
+1907.84,and how things fit together like
+1909.12,"that, as well as an emerging"
+1910.84,"categorical semantic structure,"
+1913.6799999999998,where we see that certain
+1914.8799999999999,classes of different types of
+1916.28,words naturally fit together. So
+1920.48,that's the solid foundation on
+1921.9199999999998,which the transformer builds.
+1923.8799999999999,But that's of course not novel
+1924.9599999999998,to the transformer.
+1926.1599999999999,Distributed representations of
+1927.56,words have been a part of neural
+1929.08,"language models, as I pointed"
+1930.36,"out, since the early nineties."
+1932.76,So what else does the
+1933.56,transformer do that makes it so
+1935.04,powerful and allows it to fit
+1936.92,and correspond and capture some
+1939.1200000000001,of the aspects of language that
+1941.28,I talked about in the first
+1942.28,"section? Well, after the first"
+1944.88,"stage of processing, which I've"
+1946.24,just outlined in the previous
+1947.3600000000001,"slides, we end up with a"
+1949.2,particular real valued
+1951.5600000000002,continuous vector for each of
+1954.0,the words in an input sentence.
+1956.5600000000002,"So the next stage, the"
+1958.0,transformer computes what's
+1959.8400000000001,called a self-attention
+1961.0800000000002,operation. So how does that
+1962.96,"work? Well, for any self-"
+1965.24,"attention operation, there are"
+1966.88,three matrices containing the
+1968.8,"weights, which parameterise the"
+1970.44,operation. So the first matrix
+1973.16,is we could call the query weight
+1974.8,"matrix WQ. The second matrix, we"
+1977.92,will call the key weight matrix
+1979.32,"WK, and the third weight matrix"
+1982.04,we'll call the value weight
+1983.0,matrix WD. And each of these
+1986.48,weight matrices have independent
+1988.64,weights in the transformer and
+1991.32,"we can, their dimensions are"
+1993.88,such that they can naturally
+1995.44,"multiply. In this case, I've"
+1996.88,written it as post-modification
+1998.8000000000002,of the distributed word vector
+2001.0,that I talked about in the first
+2002.0800000000002,"section. And importantly, as the"
+2004.3600000000001,self-attention operation is
+2005.48,"carried out, these weights are"
+2007.3200000000002,applied equally and in exactly
+2010.2800000000002,the same way to each of the
+2011.3600000000001,words in the input. So we end up
+2014.8400000000001,"with, for every individual word"
+2016.64,"vector I've written here, e"
+2018.0800000000002,"beetle, corresponding to the"
+2019.2800000000002,"word beetle in the input, we end"
+2021.24,up with three further vectors
+2022.76,corresponding to multiplying
+2024.2,"that vector by the matrix WQ,"
+2026.8799999999999,the matrix WK and the matrix WV.
+2029.28,So those three additional
+2030.12,"vectors we can call bold Q, bold"
+2032.52,K and bold V. And we can call
+2035.64,"those, they are typically called"
+2037.64,"the query vector, the key vector"
+2040.12,and the value vector for this
+2041.32,self-attention operation
+2042.8799999999999,corresponding to each of the
+2044.0,words. And then with those three
+2048.52,"vectors, we use them to"
+2050.88,understand how the difference
+2052.44,between the different words in
+2053.92,the input start to interact. So
+2056.2000000000003,"in particular, with the query"
+2058.12,"vector, we produce an operation"
+2062.2400000000002,"where for every word, we take"
+2063.88,the query vector corresponding
+2065.16,to that word and we compute the
+2067.32,"inner product, the dot product"
+2069.0,"of that word with the value,"
+2070.92,with the key vector
+2073.2400000000002,corresponding to each of the
+2074.2000000000003,other words. So that's
+2075.28,represented here by the dotted
+2076.6,line. And by taking a dot
+2079.2000000000003,"product in that way, we get a"
+2081.8,"value. And then we can, we want"
+2085.48,to understand how big is that
+2086.92,scalar relative to an average
+2088.6400000000003,scalar that we would get if we
+2089.84,just took that operation
+2091.32,arbitrarily. So essentially we
+2092.96,want to give the model to the
+2094.6400000000003,power to represent how strong
+2096.52,should the connection between
+2097.6400000000003,these two words be. And in order
+2102.6400000000003,for that to be a nice
+2104.48,normalised distribution over all
+2106.4,the possible strengths computed
+2107.6800000000003,"by the model, we first work out"
+2110.84,the inner product of the query
+2112.88,value with the key value of a
+2114.7200000000003,particular word. And then we
+2117.52,divide that number by the dot
+2122.4,"product of the, well, we need to"
+2127.32,normalise by a quantity
+2128.6000000000004,corresponding to the dot product
+2130.0,of that query vector with each
+2132.36,of the key vectors of the other
+2133.44,words. And the way we do that is
+2136.72,we compute those values and we
+2139.48,pass all of those values of the
+2141.64,dot products through a softmax
+2142.9599999999996,"layer, which gives us a"
+2145.24,"distribution. So it normalises,"
+2147.64,it exponentiates and normalises
+2150.04,such that we get a nice smooth
+2151.3199999999997,distribution corresponding to
+2152.64,how well each of the queries
+2154.7599999999998,corresponds to each of the keys
+2158.04,of the words in the input. So
+2161.64,this then gives us a set of
+2163.2,"weights correspond, it's a"
+2165.68,"probability distribution, which"
+2167.0,gives us a set of weights
+2168.44,between zero and one. So for a
+2170.64,"given word, beetle, we get a set"
+2172.52,"of weights, one for each of the"
+2175.16,words in the input telling us to
+2177.3599999999997,what extent is there a strong
+2179.08,interaction between the word
+2180.2799999999997,beetle and that other word. So
+2182.56,"in this case, the way I've"
+2183.52,marked it in the slide is that
+2185.08,the strongest interaction when
+2186.56,we do this operation is with the
+2188.68,word drove. And that might be
+2190.56,because the word drove tells us
+2192.7599999999998,in particular that this beetle
+2194.4,"is not the animal type of beetle,"
+2196.08,but it should in fact be thought
+2197.12,of as the car type of beetle. So
+2198.76,that's the sort of interaction
+2199.96,that we want to naturally
+2200.76,capture here. Once we've got
+2203.7200000000003,"these weights, we then use them"
+2206.1600000000003,to tell us how much of the value
+2208.92,representation to take through
+2211.2000000000003,to the next layer of the
+2212.28,"transformer. So in this case,"
+2214.28,"for example, when representing"
+2216.6,"the word beetle, we would notice"
+2218.4,a strong connection with the
+2219.52,word drove and that would give
+2221.76,us a strong weight in our
+2222.88,attention distribution. And then
+2224.7200000000003,that would tell us to take a lot
+2226.12,of the value of the embedding
+2228.44,for drove through to the next
+2231.0,layer of the transformer. So the
+2233.2400000000002,operation which allows us to
+2235.0,take an amount of the value
+2238.0,"through to the next layer, which"
+2239.2000000000003,corresponds to the weight
+2240.56,computed by the transformer is
+2242.28,just this simple weighted sum.
+2245.2000000000003,So what we end up with then for
+2247.44,each word like beetle is that we
+2249.56,take a small amount of the value
+2251.36,of each of the other words plus
+2253.28,some of the value of the word
+2254.28,beetle through to the next layer
+2255.8,of the transformer. And that can
+2258.6,then be aggregated to form the
+2260.2400000000002,next layer's representation of
+2262.4,the word beetle. So notice that
+2265.7200000000003,having performed this
+2267.32,"transformer layer, we haven't"
+2269.88,reduced the number of embeddings
+2271.32,"in the model in any way. We, we"
+2274.1200000000003,still have a representation
+2276.1200000000003,corresponding to the word beetle
+2278.56,"that we started with, but that"
+2279.96,representation has been updated
+2281.56,or modulated conditioned
+2283.32,exactly on information about how
+2286.2,well it corresponds or how well
+2288.32,it should interact with all of
+2290.12,the other words in the input.
+2292.4,And of course that was just for
+2293.2400000000002,"the word beetle, but we do that"
+2294.76,for each of the other words in
+2296.08,turn. And that computation can
+2297.6,"be computed in parallel, which"
+2299.12,makes the transformer quite fast
+2301.32,to feed forward in today's deep
+2304.44,learning libraries. And so for
+2307.7200000000003,one application of a self
+2308.88,"attention layer, we end up with"
+2310.96,the same number of distributed
+2312.52,representations coming out as we
+2314.7200000000003,had going in. And within the
+2316.76,"mechanism, the only weights that"
+2318.6800000000003,we learn are those single matrix
+2321.48,"giving us the queries, a second"
+2324.6800000000003,matrix giving us the keys and a
+2326.76,"third matrix, which gives us the"
+2328.28,value representations. Of
+2329.92,"course, those matrices are then"
+2331.08,applied to each of the
+2331.92,individual words.
+2336.08,But it's not just this self
+2337.36,attention layer that gives the
+2338.52,transformer its expressibility
+2341.08,and power. There's actually an
+2344.28,operation known as a multi head
+2346.32,"self attention, which basically"
+2348.0,takes the operation I've just
+2349.4,talked about and reapplies it
+2351.72,four different times in parallel.
+2353.7599999999998,So if you imagine the operation
+2355.68,that I just spoke about being
+2356.92,"parameterised by three matrices,"
+2359.64,"WQ, WK and WV, well we can"
+2362.68,repeat that process with three
+2364.64,additional independent matrices.
+2366.44,"And in fact, typically we might"
+2368.2000000000003,do it say four times. So we'll
+2369.88,end up with four sets of three
+2371.84,"independent matrices, and each"
+2373.8,of them can do exactly the same
+2375.48,self attention operation as I
+2377.4,just talked about in the
+2379.88,previous slides. So we end up
+2382.32,with four independent and
+2384.48,parallelisable self attention
+2386.6,"operations, each computed on the"
+2390.16,input word of a particular layer
+2392.32,in order to get us through to
+2393.48,"the next layer. Now, we can"
+2396.36,actually do that by adding a
+2397.36,number of different values.
+2398.4,"Now, of course, that is a lot of"
+2400.2000000000003,computation and it might require
+2401.8,a lot of memory if we end up
+2403.08,with very large representations
+2404.48,"in our model. In practice, then,"
+2407.56,what the developers of the
+2408.52,transformer recommend is that
+2410.88,each of our self attention layers
+2412.6800000000003,actually effectively reduces the
+2415.36,dimensionality of the input
+2417.1200000000003,vectors. So if the input vector
+2418.6400000000003,in the light blue at the bottom
+2419.88,of the slide here has dimension
+2421.48,"100, then we can make the matrix"
+2426.0,a rectangular matrix rather than
+2427.8,a square matrix. And what that
+2429.4,would do is mean that the output
+2431.24,"of Wb, which is the value"
+2432.96,"vector, which gets passed to the"
+2434.36,"next layer of the transformer,"
+2436.2,that can be arbitrarily small.
+2438.0,"In this case, we might find it"
+2439.72,to be just 25 units. And so each
+2443.0,self attention layer
+2444.2,independently takes 100
+2445.68,dimensional vector and returns
+2448.2,25 dimensional vector for each
+2450.76,"unit, for each word in our"
+2453.08,input. But if we do that four
+2455.16,"times, then we end up with four"
+2457.0,25 dimensional vectors and those
+2459.44,"can be aggregated. In fact, in"
+2461.44,the transformer they're passed
+2462.52,through an additional linear
+2464.16,"layer, which is parameterised by"
+2465.52,"a matrix W0, but then"
+2468.2799999999997,concatenated to return overall
+2472.04,"vector of the same dimension, 100"
+2474.24,"units, as was the dimensionality"
+2476.68,"of the input. So in that way, we"
+2478.8799999999997,can apply multi-head self
+2480.8399999999997,attention. We can give the model
+2482.2,four independent ways to
+2484.64,analyse the interactions across
+2487.16,the different words in the input.
+2490.48,And we can do so without
+2492.6,expanding the dimensionality with
+2495.3199999999997,which the model needs to
+2496.16,represent each of its words. And
+2499.2799999999997,that makes it relatively
+2500.7999999999997,"practical tool, which doesn't"
+2502.64,lead to an enormous explosion in
+2504.96,the memory requirements of the
+2507.68,"models, but it does give the"
+2509.04,model many independent ways with
+2510.88,which it can represent
+2512.32,interactions between the words
+2514.2000000000003,and the input. Now after that
+2517.7200000000003,"multi-head self attention layer,"
+2519.4,the model does what's called a
+2522.12,feedforward layer. So
+2523.92,"conceptually, this is less"
+2524.88,"interesting, but essentially the"
+2527.52,representations at the output of
+2529.12,the multi-head self attention
+2530.8,layer are then multiplied again
+2532.4,by a linear layer. There's a
+2533.52,"rectified linear unit,"
+2534.92,"non-linearity, and then they're"
+2538.44,actually expanded out in
+2539.44,dimension somewhat and then
+2540.88,reduced again in dimension with
+2542.08,another linear layer. So when
+2544.48,considering a transformer
+2546.32,"altogether, it's actually"
+2549.2400000000002,multiple applications of those
+2552.12,multi-head self attention layers
+2554.16,and the linear layers that I
+2556.28,described afterwards. But
+2558.48,there's another important detail
+2560.0,"in the transformer, which is the"
+2561.96,notion of skip connections. So
+2564.52,whenever we apply a multi-head
+2566.2000000000003,self attention layer or indeed
+2568.2,"linear layer, the transformer"
+2571.0,also gives the model the option
+2572.6,to ignore that computation and
+2576.24,instead to pass the activations
+2579.3999999999996,that were at the input to that
+2581.2799999999997,"multi-head self attention there,"
+2583.16,direct to bypass the self
+2584.72,attention there and go through
+2586.8399999999997,to the point in the network of
+2589.3199999999997,which the output is coming out
+2590.9199999999996,of that self attention there.
+2592.3599999999997,And then that is added to the
+2594.3999999999996,output of the self attention
+2595.52,"there, passed through a layer"
+2596.92,"normalisation there, and then"
+2599.0,that represents the actual
+2602.04,"output of the whole unit, the"
+2604.7200000000003,"whole part of the network, the"
+2605.8,whole module which is doing the
+2607.48,multi-head self attention. So
+2610.8,why might that sort of skip
+2612.36,"connection be important? Well,"
+2615.32,in the examples I gave in the
+2618.04,"previous section about language,"
+2619.64,one thing that should have maybe
+2620.8,come across is the importance of
+2623.7200000000003,or the role of our expectations
+2626.04,in forming a consistent
+2627.36,representation of what
+2628.7599999999998,particular input is. So as an
+2631.72,"example, in the case of pet"
+2633.84,"fish, we came to the"
+2636.7599999999998,understanding that pet fishes
+2638.2799999999997,"have many bright colours, even"
+2640.8,though that was not necessarily
+2642.8,part of the individual parts of
+2646.12,the input. It's not necessarily
+2647.72,something we would associate
+2648.7599999999998,with pets and it's not something
+2650.2799999999997,we would necessarily associate
+2651.48,with fish ordinarily. And where
+2654.36,does that additional
+2655.48,notion of colours come from?
+2657.36,"Well, it probably comes from our"
+2659.72,sort of wider understanding of
+2662.36,the world and our ability to
+2664.32,think about pet fish as a
+2665.72,combination and then reconsider
+2667.88,how the input works. And so
+2670.88,these sorts of top down
+2672.16,"influences, our expectations"
+2673.96,influencing how we actually
+2675.6,combine the inputs in language
+2677.32,are really common in many
+2679.12,different contexts. And if you
+2681.68,"think about skip connections,"
+2683.44,"it's not a perfect module, it's"
+2685.16,"a perfect model of this, but it"
+2686.64,does give the transformer a
+2688.3999999999996,rudimentary ability to allow its
+2690.3999999999996,representations of things at a
+2692.3599999999997,higher level of processing to
+2694.0,interact with these
+2694.92,representations of things at a
+2696.08,lower level of processing. So
+2697.92,let's say that the model didn't
+2699.3599999999997,have skip connections and fed
+2701.6,things through to a certain
+2703.24,level in the hierarchy. At that
+2705.0,"point, after computing many"
+2707.3199999999997,"different interactions, the"
+2708.68,model might form a consistent
+2710.7599999999998,sense of the fact that a meaning
+2713.56,needs to be understood in a
+2714.48,"particular way. But of course,"
+2716.36,those top down influences tell
+2718.12,us that that expectation of what
+2720.2400000000002,the meaning might be should
+2721.68,actually feed back and allow us
+2723.64,to re-modulate how we understand
+2725.16,"the input. Well, a skip"
+2726.76,"connection, which comes up from"
+2728.04,the input and interacts with the
+2729.6,model at that point can actually
+2732.36,compute such an interaction in
+2734.68,"subsequent layers, because at"
+2736.4,"that point, the model has access"
+2738.0,to both a higher level
+2739.48,representation of what it
+2740.6,"expects, the best way of"
+2742.96,interpreting the whole
+2743.92,"situation is, and it has direct"
+2746.96,access to the lower level
+2748.32,"input. So in some ways, in a"
+2750.8,"very deep model, the addition of"
+2752.7200000000003,skip connections allows the
+2754.52,model to execute a form of top
+2757.92,down influence on processing.
+2763.32,There's one more detail I'll
+2764.64,finish off with in our
+2766.0,characterisation of the
+2766.96,"transformer. Now, if you were"
+2769.04,"aware, if you were paying"
+2769.88,attention during the
+2771.2400000000002,"explanation, you may well have"
+2772.6,noticed that none of the
+2773.96,operations that I described on
+2776.24,the input words took into
+2777.96,account the actual relative
+2779.8399999999997,order of the words in the input.
+2782.36,It was a series of matrix
+2783.48,"multiplications, which were"
+2784.6,applied identically to each of
+2786.7999999999997,the words. And then on top of
+2789.0,"that, a series of inner"
+2790.4,"products, which are symmetric"
+2793.04,"operations, which don't favour"
+2795.52,the ordering in which we apply
+2797.12,them with respect to the words.
+2799.16,So there was no way that a model
+2800.6,like this would have any ability
+2803.16,to express the fact that
+2804.72,certain words appear closer
+2805.96,together in the input or certain
+2807.8399999999997,words appear further apart. And
+2809.44,"of course, we know in language"
+2811.6,that the word order can tell us
+2813.36,some important things about what
+2815.36,an overall sentence means. So in
+2818.88,order to give the model
+2820.16,sensitivity to word order in a
+2822.6,"way that the computational form,"
+2825.36,the functional form of the
+2826.7599999999998,"model, doesn't allow, the"
+2829.76,developers of the transformer
+2830.88,came up with a rather nice trick
+2832.88,known as positional encoding. So
+2836.5600000000004,positional encoding is just a
+2837.76,way of determining a set of
+2839.48,"scalar constants, which are"
+2841.7200000000003,added to the word embedding
+2843.8,"vector after, say, let's say in"
+2846.1600000000003,the lowest level of the
+2847.0,"transformer, they can be added"
+2849.0400000000004,before the first self-attention
+2851.28,"layer, but just after the word"
+2852.88,embedding layer. And those
+2854.6800000000003,scalars combine with the word
+2856.7200000000003,embedding to mean that whatever
+2859.6,if a word appears in a
+2860.96,"particular slot in the input,"
+2862.92,regardless of the fact that its
+2864.12,embedding weights will
+2865.16,"necessarily be the same, the"
+2867.72,actual effective representation
+2869.44,that the transformer sees will
+2870.7999999999997,be slightly different depending
+2872.72,on where it appears in the
+2874.0,input. So to achieve this sort
+2876.92,"of thing, you just need, the"
+2878.52,model just needs a set of small
+2880.36,"scalars, which are different in"
+2882.7599999999998,each of the possible locations
+2884.7999999999997,that a word could appear in the
+2886.12,input. And they use a nice
+2889.7999999999997,"sinusoidal function, which has"
+2892.44,"various properties, which may"
+2894.88,well be more desirable than just
+2896.72,"being, allowing the word to"
+2897.8399999999997,discriminate words according to
+2900.44,their position. Because in fact
+2901.88,that sinusoidal function gives
+2903.7999999999997,the model a slight prior to pay
+2905.92,attention to relationships of a
+2908.3199999999997,"certain wavelength, a certain"
+2910.68,distance across the input and
+2913.52,each particular unit in the
+2916.84,embedding representation can
+2918.52,then specialise at recognising
+2921.48,interactions or correspondences
+2923.6,at a different distance from a
+2925.08,"given word. So unlike, if you"
+2929.0,think about models like a
+2929.96,recurrent neural network or an
+2931.28,"LSTM, those models have the"
+2933.12,notion of order built in
+2934.68,because they process input
+2936.32,sequentially one word after the
+2940.4,"other, according to a process"
+2942.32,transitioning the state from its
+2945.6400000000003,position after reading one word
+2947.1600000000003,to after reading two words to
+2948.2400000000002,after reading three words to
+2949.04,after reading four words. What
+2950.96,that means is that the model has
+2951.92,a very strong awareness of the
+2953.56,"ordering of the words naturally,"
+2955.88,but that it's harder for that
+2958.04,"model to remember, to pay"
+2960.76,attention to things a long time
+2962.36,"in the past, even if those"
+2965.32,things actually end up having a
+2966.56,really important influence on
+2968.0,what I'm currently looking at
+2969.04,"now. With a transformer, things"
+2972.04,are totally different. The
+2972.92,"model has sort of natively, in"
+2975.16,"its native functional form, it"
+2976.56,has no awareness of word order
+2979.44,and we have to add on these
+2980.52,additional positional encodings
+2982.24,to give the model a weak
+2983.32,awareness of word order. But the
+2986.0,transformer actually performs
+2987.36,better than RNNs and LSTMs on a
+2989.16,lot of language tasks. And this
+2990.92,maybe tells us that it's easier
+2992.8,"to learn the word, the notion of"
+2995.7599999999998,word order for the few cases or
+2997.84,for the number of cases where
+2998.92,it's actually important in
+3000.2,"language, than it is to be given"
+3004.2799999999997,the notion of word order
+3005.72,"automatically, but to have to"
+3007.24,learn the very difficult process
+3009.6,of paying attention to things a
+3010.7999999999997,long time in the past. And when
+3012.52,"I say difficult, I mean the"
+3014.04,gradients have to pass back
+3015.56,"through many, many weight"
+3017.16,"matrices in order to determine,"
+3021.12,in order to allow the model to
+3022.8399999999997,update and then learn to encode
+3026.12,dependencies between things in
+3027.48,the past and things in the
+3028.72,"present. With the transformer,"
+3030.56,that path that the gradient has
+3032.04,to go through is much shorter
+3034.24,because there's no prior
+3035.7599999999998,favouring of things which are
+3036.9599999999996,close together. Instead of the
+3038.48,gradient path that the model
+3040.2,needs to go through to connect
+3042.04,any two words in the input is
+3044.56,"equivalent. And in fact, it is"
+3046.64,indeed shorter on average than
+3048.08,it is in recurrent neural
+3049.68,networks. So that gives a small
+3052.6,amount of intuition about
+3053.9599999999996,another reason why the
+3054.7999999999997,transformer might be so
+3055.8399999999997,effective at processing
+3056.88,language. So just to summarise
+3059.0,"this section, we saw in the"
+3061.04,previous section that words
+3062.7200000000003,shouldn't necessarily be thought
+3064.08,of as independent discrete
+3065.36,symbols and that disambiguating
+3068.0,their meaning can depend a lot
+3070.1600000000003,"on the context, but not only on"
+3072.7200000000003,"the immediate context, which is"
+3073.92,"closest to those words, but on"
+3076.56,potentially distant context of
+3079.48,the information encoded in words
+3080.96,a long way away. We've also seen
+3083.56,that functions which models use
+3086.0,in order to combine the meaning
+3087.12,of two words should take into
+3088.84,account the meaning of those
+3089.92,words and if possible take into
+3092.52,account a wider general
+3094.24,knowledge of how things typically
+3095.88,combine in order to allow that
+3098.88,to modulate the interactions
+3101.56,between the words coming in. And
+3105.04,we think about the architectural
+3106.8,components I talked about in the
+3108.24,transformer. The multi-head
+3110.52,processing is one way of getting
+3112.96,at this notion that words are
+3114.44,not discrete symbols because it
+3116.48,naturally gives the transformer
+3119.0,even in one single feed forward
+3120.68,pass the opportunity to
+3121.96,represent each word at each
+3123.8,"layer with n, let's say four,"
+3127.16,different possible contextualised
+3129.32,"representations. And of course,"
+3132.36,"going back longer term, just the"
+3134.44,general notion of representing
+3135.8,words as distributed
+3137.08,representations and allowing
+3138.92,words with similar meanings to
+3140.28,occupy local areas in a large
+3142.84,"geometric vector space,"
+3144.08,also allows the model to express
+3145.92,this non-discrete nature of word
+3148.16,meaning in a very elegant way.
+3151.0,"Now, the fact that distribution"
+3152.3199999999997,depends on context is very
+3154.4,"nicely modelled by self-attention,"
+3156.44,precisely gives the meaning of
+3158.3199999999997,every word to be critically
+3160.92,dependent on the meaning of all
+3162.56,the other words in a given input
+3165.44,stream. And the fact that that
+3168.3199999999997,"context could be non-local, as"
+3169.84,"I've just talked about, is very"
+3171.4,nicely modelled by the
+3172.2,self-attention mechanism
+3173.4,because the gradient flow from
+3175.6,"the parts, from the particular"
+3177.36,"point, I mean at a sentence, to"
+3178.88,any other point in the sentence
+3180.32,is the same. So interactions
+3184.2000000000003,between non-particularly
+3185.2000000000003,favoured over whiner
+3186.52,interactions. Another fact is
+3188.6,"that the more layers we have,"
+3190.32,the more chance the model has to
+3192.08,learn as it moderates its
+3194.6,representation of different
+3195.6,"things, how interactions might"
+3198.44,take place at different levels
+3199.76,of abstraction as the model
+3200.84,"goes, continues to reprocess"
+3203.8,"the model, the input. And"
+3206.6800000000003,"finally, on this point about how"
+3208.32,meanings combine and the fact
+3210.92,"that the meaning, the ways in"
+3214.0,which the meanings of two words
+3215.1200000000003,combine seems to often depend on
+3218.08,the particular meaning of those
+3219.28,words and also top-down effects.
+3221.7200000000003,We've seen that skip connections
+3223.84,are one way in which the
+3226.08,transformer can learn to
+3227.6800000000003,implement the interaction of
+3229.32,higher level information
+3230.32,with lower information. And
+3232.0,we've also again seen that
+3234.96,parameterised functions on
+3236.4,"distributed representations, i.e."
+3238.6800000000003,the multiplication of a matrix
+3240.28,by a vector is precisely the
+3243.0,operation of a function which
+3245.7200000000003,combines word meanings according
+3248.76,to the meanings of the words
+3250.28,themselves. And those
+3252.0,operations are common in many
+3254.32,"neural language models, but are"
+3255.6800000000003,a really important part of the
+3257.32,transformer architecture. So
+3259.32,hopefully this section has given
+3260.6400000000003,you some intuition about how a
+3262.36,"transformer works, but also some"
+3264.36,intuition about maybe why it
+3266.96,"works, why it is that the"
+3268.84,various components in the
+3269.92,transformer improve on a model's
+3272.56,ability to process language
+3274.56,because of the way that we think
+3277.04,meaning works in a very sort of
+3279.8,intricate and interactive way
+3281.96,when we understand linguistic
+3284.44,"input. In the last section, we"
+3287.04,introduced the transformer.
+3288.48,And we talked about how various
+3291.2400000000002,components within the
+3292.12,transformer combine to make it a
+3295.44,"very powerful process, a very"
+3298.4,powerful model for processing
+3300.52,sentences and combinations or
+3304.64,sequences of words. In this
+3307.16,"section, I'm going to talk a"
+3309.0,little bit about a very specific
+3310.76,use of the transformer. It's a
+3313.36,way of training transformer
+3314.64,models in order to allow them to
+3317.44,excel at a wide range of
+3319.68,different language tasks. And
+3322.32,those tasks might involve
+3324.04,reading a sentence and making a
+3325.56,prediction or classifying how
+3327.52,two sentences relate to each
+3328.96,"other, or even classifying or"
+3331.96,making predictions about longer
+3333.36,"texts, such as documents. But"
+3336.96,"before I do that, I also just"
+3338.8,want to go back to our points
+3343.2000000000003,about the nature of language and
+3345.64,"discuss one more issue, which I"
+3347.6,think is quite motivating when
+3349.12,we think about how transformers
+3350.56,are applied in the model that
+3353.08,I'm going to talk about in this
+3353.8799999999997,session. So let's consider this
+3357.96,"sentence, time flies like an"
+3359.92,arrow. And then we can compare
+3363.04,it to what seems superficially
+3365.12,"to be a very similar sentence,"
+3366.44,fruit flies like a banana. But
+3369.4,"of course, when we start to"
+3370.48,process and make sense of those
+3372.24,"sentences, it feels very clear"
+3374.32,to us as native English
+3375.76,"speakers, that there's quite a"
+3379.52,difference in the way that the
+3381.4,words in those sentences have to
+3382.96,relate to each other in order
+3384.56,for us to sort of construct the
+3385.8,meanings in our head. And it
+3388.4,certainly seems to me like
+3389.8,there's at least two factors
+3392.04,that are really important here.
+3393.4,"So one thing is that we, in the"
+3395.36,"top sentence, time flies like an"
+3397.1600000000003,arrow. We know what an arrow is.
+3399.6400000000003,We know that they regularly fly.
+3401.92,"And in fact, we know how they"
+3403.08,fly. So we've got our experience
+3405.36,of arrows. Another important
+3407.64,piece of experience that we have
+3409.36,is our experience of a bunch of
+3411.56,"phrases or sentences, which are"
+3412.92,quite similar to the phrase time
+3417.88,flies like an arrow. And in
+3419.3199999999997,"particular, they're similar in"
+3420.7999999999997,the way that the meanings of the
+3422.08,words combine for us to come up
+3423.96,with representations of our
+3425.3199999999997,sentences. So those could be
+3426.84,things like John works like a
+3428.2,Trojan or the trains run like
+3430.04,clockwork. These are all
+3431.0,actually kind of metaphorical
+3432.8,or simile style sentences where
+3435.2400000000002,"we can, where we compare the way"
+3437.76,that something works with the
+3439.04,way that something else works.
+3440.4,So it feels to me like those two
+3441.84,pieces of experience are very
+3443.1200000000003,important in our ability to read
+3446.2400000000002,a sentence like time flies like
+3447.6800000000003,an arrow and immediately
+3448.88,understand it. And in the case
+3451.76,"of fruit flies like a banana, of"
+3453.28,"course, we come to quite a"
+3454.52,"different understanding, right?"
+3456.28,We know that we're not
+3457.8,comparing the ray of fruit flies
+3461.48,with the way that bananas fly.
+3463.76,And how is it that we can
+3465.52,somehow know that that's not
+3467.28,what we have to do to understand
+3468.56,"this sentence? Instead, what we"
+3471.36,do is we have some knowledge of
+3473.52,fruit flies and we know that in
+3476.0,"fact that one of them, maybe one"
+3477.12,of the most salient things about
+3478.56,"fruit flies, I'm not an expert"
+3479.88,"in fruit flies, but there's one"
+3481.12,"thing I do know, which is that"
+3482.0,they like fruit and we know that
+3483.8,bananas are fruit. And so this
+3485.44,"connection helps to tell us,"
+3487.88,"well, maybe that it's a"
+3489.68,different type of liking and
+3491.4,liking that I need to be
+3493.2400000000002,thinking about in this sentence.
+3494.84,And then of course there's
+3495.7200000000003,"again, other than that"
+3496.84,background knowledge of how the
+3498.04,"world works, how fruit flies"
+3499.6,"are, there's also this kind of"
+3501.1600000000003,more linguistic knowledge of
+3503.84,sentences we may well have
+3505.04,"already previously understood,"
+3507.08,which in which the meaning seems
+3508.56,to combine in a similar way to
+3510.6,fruit flies like a banana. So
+3512.44,Fido likes having his tummy
+3513.7200000000003,rubbed or grandma likes a good
+3515.76,"cuppa. In those cases, it seems"
+3518.1600000000003,like the process of putting
+3519.7200000000003,together the meaning has
+3520.88,something quite similar or in
+3522.76,common with the scenario in
+3525.0,fruit flies like a banana. So if
+3527.0,we're going to come up with a
+3528.2400000000002,general language understanding
+3530.04,"engine, that's able to cope with"
+3532.2000000000003,all these different types of
+3533.88,"processes and constraints, which"
+3535.52,are involved in understanding a
+3536.84,"sentence, then there's obviously"
+3539.6800000000003,a lot of places where such a
+3541.52,model needs to get its
+3542.52,experience and a lot of places
+3544.76,where such a model needs to get
+3546.6400000000003,its understanding of the world
+3547.76,and its understanding of
+3548.6,language. And those considerations
+3551.96,lead us to add a fifth point to
+3553.44,these many characteristics of
+3554.64,"language, which is that when we"
+3557.2,"actually form an understanding,"
+3558.2,"you know, it really is that, it"
+3559.8399999999997,really does seem to be a process
+3561.24,of balancing our existing
+3562.6,knowledge. And that could be
+3563.64,knowledge of language and also
+3564.96,knowledge of the world with the
+3566.96,"input, with the particular facts"
+3568.44,of the thing that's currently
+3569.3199999999997,coming into the model. And that
+3572.24,consideration is a key
+3573.92,motivating factor behind the
+3576.3199999999997,"approach, which is taken in this"
+3578.56,model I'm going to describe in
+3579.88,"the section, which is called"
+3580.88,BERT. BERT stands for
+3585.56,Bidirectional Encoder
+3586.68,Representations with
+3587.64,Transformers. And BERT is
+3590.84,essentially an application of
+3592.64,the transformer architecture that
+3593.96,I described in the last section.
+3596.04,But the key insight with BERT is
+3597.96,that rather than training a
+3600.64,transformer just to understand
+3603.4,"the inputs to sentences, which"
+3605.7999999999997,the model is currently
+3606.68,"considering, a process of"
+3609.44,pre-training takes place in
+3611.64,which the weights within the
+3613.0,model are endowed with knowledge
+3614.64,of a much wider range of text in
+3617.16,"this case, which could plausibly"
+3619.3599999999997,give the model that background
+3620.8799999999997,"knowledge, which is really"
+3621.8799999999997,necessary for forming a coherent
+3623.7599999999998,understanding of the total of
+3625.2799999999997,the different types of sentences
+3627.12,that a language understanding
+3628.6,process then needs to be able to
+3630.48,understand. So the important
+3633.56,thing to remember when
+3634.52,considering how BERT works is
+3636.28,that a transformer as described
+3638.0,in the previous section really
+3639.52,is just a mapping from a set of
+3641.76,distributed word representations
+3644.0400000000004,to another set of distributed
+3645.76,word representations. So as I
+3648.2000000000003,talked about in the last
+3649.0800000000004,"section, the first layer of a"
+3650.52,transformer goes from the
+3652.32,particular input symbols passed
+3654.28,"to the model to a space, a"
+3656.0,geometric space of continued
+3657.5600000000004,"value vectors. And of course,"
+3659.6400000000003,what comes out after these many
+3661.48,layers of self-attention is
+3664.48,precisely another space of
+3667.36,continuous valued vectors and
+3670.44,corresponding to each of the
+3672.04,"words in the input, the exact"
+3675.36,same set of words that are in
+3676.4,the input. So if I pass a
+3678.68,"sentence to a transformer model,"
+3682.2,it'll very quickly compute a set
+3684.12,of embeddings for each of the
+3685.72,"words in that sentence, and then"
+3687.48,"it will output, it will pass"
+3689.12,them through self-attention
+3690.04,models and output a set of
+3692.04,embeddings for each of the words
+3693.28,"in that sentence. But of course,"
+3694.76,each of those embeddings will be
+3695.8,"highly contextualised, highly"
+3698.6400000000003,modulated by all the other words
+3700.2000000000003,"in the sentence, and hopefully"
+3701.7200000000003,will have gone through the
+3702.6400000000003,sorts of processing needed for
+3704.96,"us to, for the model to sort of"
+3706.5600000000004,gradually and incrementally form
+3708.44,a reasonable representation of
+3710.2400000000002,what the sentence means. So
+3712.88,given that fact that a
+3714.76,transformer is just a mapping
+3716.8,from a set of word
+3717.96,representations to a modified
+3720.6800000000003,set of word representations of
+3722.76,"the same length, there's quite"
+3726.36,an easy way in which we could
+3728.8,train such a model in order to
+3731.0,extract knowledge from an
+3732.88,enormous amount of text that we
+3734.2400000000002,might just have lying around. So
+3736.6400000000003,"in particular, the insight from"
+3738.6400000000003,BERT is precisely how can we get
+3740.88,knowledge into the weights of
+3742.0,such a model without requiring
+3746.0800000000004,"problems or data, which has been"
+3748.44,labelled by human experts or
+3751.92,some other mechanism in order to
+3754.64,give the model sort of knowledge
+3756.48,of what's the right
+3757.2000000000003,classification or what's the
+3758.2400000000002,right answer to make. So how can
+3760.12,"we get knowledge into a model,"
+3762.2400000000002,transform a model in an
+3763.28,unsupervised way? And the
+3766.4,approach that the authors of
+3767.4,BERT take is firstly by means of
+3771.12,a masked language model
+3772.44,pre-training phase. So the way
+3774.64,this works is the following. The
+3776.96,authors just considered the
+3778.04,problem of mapping a particular
+3780.16,sequence of words to the exact
+3783.96,same sequence of words. So the
+3786.3599999999997,job of this transformer in
+3787.56,theory is just to represent a
+3789.7599999999998,"sentence, for example, and then"
+3792.12,output a sentence at the very
+3794.48,top of its network. But rather
+3799.52,than having the model output the
+3802.44,"exact same sentence, instead in"
+3806.3199999999997,"the input to the model, one of"
+3807.88,the words is masked out. So the
+3810.2400000000002,model is not aware of one of the
+3811.7200000000003,words in the input sentence. And
+3814.1600000000003,instead of having to predict all
+3815.7200000000003,of the words in the input
+3816.96,"sentence, the model just has to"
+3818.76,make a prediction conditioned on
+3821.2000000000003,the output embedding for the
+3823.52,missing word of what that
+3826.6,missing word was. So it just has
+3828.56,"to answer the question, you know,"
+3830.6400000000003,here's a sentence with a missing
+3831.96,"word in it, sucking up from"
+3834.6800000000003,"words, and the model just has to"
+3837.52,make the prediction that the
+3838.6,missing word in that case is
+3839.88,knowledge. And when training the
+3843.88,"model, the authors of BERT do"
+3845.36,that with 15% of words at random.
+3847.96,So they present sentences from
+3849.8,any particular place where we
+3851.84,might be able to get running
+3852.64,text language. And the authors
+3855.04,mask out words with a
+3856.56,probability of 15% and then ask
+3858.92,the model to make a prediction
+3861.52,"and backpropagate the cost,"
+3865.48,which is essentially the
+3867.52,"likelihood, the negative log"
+3868.96,likelihood of the model having
+3870.92,predicted that word over all of
+3872.36,the other words in its
+3873.04,vocabulary. So that's masked
+3875.68,language model pre-training. But
+3877.44,one thing that the authors
+3878.36,noticed is that if they trained
+3881.28,"the model in that way, then on"
+3882.8,"the test set, when they came to"
+3883.84,"use this model, of course, in"
+3885.52,"the input, there wouldn't"
+3886.76,actually be any tokens masked
+3888.2,out. So there's a risk that just
+3891.52,by training the model in this
+3892.56,"way, it would not behave well on"
+3895.16,inputs where there wasn't
+3896.0,anything masked out. So for a
+3897.7999999999997,"small amount of the time,"
+3900.44,"instead of masking out a word,"
+3902.3999999999996,they have the model make a
+3904.2,prediction of which word is
+3906.3199999999997,"missing, even though they didn't"
+3907.96,actually mask a word out. So no
+3909.24,"word is missing. In this case,"
+3910.52,the model really does just need
+3911.7599999999998,to retain which word is in a
+3914.52,particular point in the sentence
+3916.04,and at the output representation
+3917.44,"corresponding to that point,"
+3919.04,"conditioned on that, make a"
+3920.3199999999997,prediction of what that word
+3921.3199999999997,"was. This, of course, if this"
+3923.04,"was just the only objective, the"
+3924.32,model would never have to do any
+3925.52,sort of inference. It would
+3927.1200000000003,never have to make any sort of
+3929.36,unexpected judgement about what
+3931.2400000000002,word could be missing. It would
+3932.6000000000004,instead just be able to copy
+3934.0,knowledge straight through. And
+3935.6000000000004,that wouldn't lead to any
+3936.6400000000003,interesting formation of any
+3937.8,interesting representations. So
+3939.1600000000003,"this is only done occasionally,"
+3940.8,but it does make the model
+3942.44,perform better on the test set
+3945.36,because the model does not kind
+3947.2400000000002,of find itself completely out of
+3949.52,its training experience when it
+3951.52,encounters sentences for which
+3952.76,"no words are masked out. Okay,"
+3955.7200000000003,so that's the masked language
+3957.1200000000003,"model, modelling objective. But"
+3960.7200000000003,in order for BERT to be an
+3961.8,"effective language processor,"
+3964.6000000000004,the authors wanted it to also be
+3967.36,able to be aware of the flow of
+3969.88,how meaning works on a longer
+3971.88,scale than just within a
+3973.2400000000002,particular sentence. So in
+3976.0,"order to achieve this, they came"
+3977.48,up with an additional mechanism
+3979.88,for training the weights in the
+3981.52,"BERT model, which is"
+3983.88,complimentary to the masked
+3985.12,language model objective. So
+3986.84,this objective can be trained at
+3988.4,the same time as the masked
+3989.72,language modelling objective.
+3991.2,"And as in that case, it doesn't"
+3993.52,require any data that's been
+3995.24,labelled by experts or found to
+3997.92,have a right answer in some way.
+3999.32,We can just construct this
+4000.7599999999998,objective by taking running text
+4003.6,from the internet. The way this
+4005.92,"works, this is called the next"
+4006.96,sentence prediction pre-training
+4008.48,objective. So the way this works
+4010.08,is the authors add an additional
+4012.12,"input token at the start, and"
+4014.24,it's the output embedding
+4016.08,corresponding to that input
+4017.64,location that's going to be used
+4019.7999999999997,to make the prediction on this
+4021.2799999999997,objective. Then as input to the
+4024.84,"model, the model is presented"
+4026.7599999999998,"with not one sentence, but two"
+4028.2,sentences in this case. And so
+4031.16,there's the additional input
+4032.48,"token, then there's the first"
+4033.92,"sentence, then a separation"
+4035.2799999999997,"token, and then the second"
+4037.08,sentence. And that's all passed
+4038.7599999999998,to the transformer and its
+4039.72,process through in parallel. At
+4041.24,"the end, the model produces"
+4042.8799999999997,representations for corresponding
+4045.4399999999996,"to each of the input tokens, but"
+4047.72,it's only the initial
+4049.9599999999996,representation corresponding to
+4051.3199999999997,this additional token that was
+4053.24,added to the input that needs to
+4055.64,be considered in this objective.
+4057.9199999999996,"And conditioned on that, the"
+4059.3199999999997,model just makes a binary choice
+4061.9599999999996,of whether or not this was
+4065.0,actually two consecutive
+4066.3999999999996,sentences from the training
+4068.0,"corpus. So in this case, it is"
+4071.0,"two consecutive sentences, SID"
+4072.68,went outside and it began to
+4074.4,"rain. So in this case, the model"
+4075.76,"would predict, yes, those are"
+4077.32,two sentences which are likely
+4078.84,to follow one another in a
+4079.84,"corpus. But by shuffling data,"
+4083.24,"the trainers can, the people who"
+4085.12,train the model can also present
+4086.72,it with negative cases. So cases
+4089.64,where one sentence didn't follow
+4091.44,the other sentence. And so that
+4093.68,might look something like SID
+4094.72,"went outside, unfortunately it"
+4096.84,wasn't. So the objective of the
+4099.84,model here is to identify this
+4101.64,as two sentences which don't fit
+4103.52,well together and to make the
+4104.68,"prediction, no, on the next"
+4107.6,sentence prediction task. So by
+4110.12,combining next sentence
+4111.24,prediction and mask language
+4112.64,"modelling, slowly the weights of"
+4114.64,"this large transformer, the"
+4116.400000000001,"BERT transformer, gradually"
+4118.400000000001,start to acquire knowledge of
+4120.28,how words interact in sentences
+4122.4800000000005,"typically, maybe abstract"
+4124.04,knowledge of the typical ways in
+4126.24,which meaning flows through
+4127.36,"sentences. And of course, in"
+4130.2,"their, the spaces in which they"
+4132.639999999999,represent each of the
+4133.639999999999,individual words at various
+4135.12,"levels of the stack, things"
+4137.4,"start to happen, like words that"
+4139.44,have similar meanings start to
+4141.0,come close together. The model
+4143.5199999999995,"might be required, might"
+4144.36,require to separate them out
+4145.84,into the different parallel
+4147.08,heads if words have various
+4148.8,different senses. And so a lot
+4152.2,of the general knowledge that we
+4154.599999999999,talked about being very
+4155.76,necessary for forming a
+4158.2,consistent and coherent
+4159.360000000001,representation of loads of
+4160.96,different language sentences can
+4162.4800000000005,start to be introduced into the
+4164.24,weights of this model as it
+4165.92,trains according to these
+4166.92,unsupervised objectives. So
+4169.320000000001,"that's the theory behind BERT,"
+4172.2,or at least the intuition behind
+4173.6,"BERT. And of course, because"
+4175.6,neither of those training
+4176.72,objectives required any sort of
+4178.04,"particular labels, you can, BERT"
+4180.320000000001,is trainable on all of the texts
+4182.2,that exist in digital form in
+4183.92,English around the world. So you
+4186.08,could take any text from the
+4187.36,internet and use it to train
+4189.6,more and more knowledge in
+4190.88,theory into the weights of BERT.
+4193.6,"Of course, that's in principle"
+4196.6,"how BERT works, but it wouldn't"
+4198.64,be a very convincing
+4199.52,demonstration unless there was
+4200.68,some evaluation. And in this
+4202.92,"case, the way that the BERT is"
+4205.36,then evaluated is by taking its
+4208.12,knowledge in all of those ways
+4209.64,and using that as a start
+4212.04,process to train on many
+4213.92,specific language understanding
+4215.48,tasks. And these tasks
+4216.92,"typically have, they do use"
+4218.32,labeled data and they typically
+4219.64,have a lot less data. So in
+4222.16,order to apply BERT to these
+4223.84,"models, the BERT weights, which"
+4225.96,are trained on all of the
+4226.8,"unsupervised objectives, are"
+4229.24,then taken and the data specific
+4232.56,to each of these tasks is passed
+4234.16,through the BERT model. And then
+4235.72,"BERT is, the BERT weights are"
+4238.08,updated according to the signal
+4241.44,from the supervised learning
+4242.639999999999,signal from these actual
+4245.16,specific language understanding
+4246.759999999999,tasks. Typically this process of
+4250.32,fine tuning the BERT
+4251.759999999999,representations for a specific
+4253.16,task takes place separately and
+4255.639999999999,independently for each of those
+4257.2,additional tasks. And it's also
+4259.759999999999,necessary in many cases when
+4262.12,fine tuning in this way to add
+4263.879999999999,a little bit of machinery onto
+4265.5599999999995,"the top of BERT because, you"
+4267.44,"know, in the standard BERT"
+4268.679999999999,"architecture, it's just making"
+4270.2,predictions where it outputs a
+4272.76,number of distributed
+4274.0,representations at the top of
+4275.599999999999,this transformer model. But of
+4278.36,"course, given a specific task,"
+4280.72,it may be necessary to come to
+4283.32,"some sort of prediction,"
+4284.96,depending on the output format
+4287.5599999999995,"of the task, it may be"
+4288.599999999999,necessary to take only some of
+4290.0,those representations and
+4291.04,condition on them with
+4291.96,additional weights in order to
+4293.5199999999995,make that prediction. But
+4294.76,typically that's only a small
+4296.0,amount of additional weights
+4297.48,that contains task specific
+4298.88,knowledge and the vast majority
+4300.68,of the model contains the
+4301.92,general knowledge that was
+4302.92,trained into the BERT model. So
+4306.56,just doing this massively
+4309.4800000000005,improves the performance of any
+4311.96,models which aim to exhibit some
+4314.76,sort of general understanding of
+4316.12,language. What I mean by that is
+4318.08,when any model which is
+4320.24,intending to be trained on a
+4322.32,"wide range of different tasks,"
+4325.36,"using the BERT style approach,"
+4326.96,so transferring knowledge from
+4328.24,an enormous running text
+4329.48,corpora via fine tuning to those
+4332.44,"specific tasks leads to, has led"
+4334.76,to a really strong and
+4336.36,significant performance on a
+4337.92,large number of these tasks. And
+4340.0,"importantly, this doesn't just"
+4342.12,allow one model to solve lots of
+4344.48,"tasks better. In many cases,"
+4346.76,this is the way to achieve
+4348.84,state-of-the-art performance on
+4350.44,these additional tasks. So even
+4352.44,a model which was just
+4353.599999999999,specialised to those additional
+4355.719999999999,"supervised learning tasks,"
+4357.24,would not perform better than a
+4358.8,model that was initially
+4359.88,"pre-trained on BERT. In fact,"
+4361.5599999999995,"for a lot of these tasks,"
+4363.5599999999995,performance is substantially
+4364.76,worse unless you apply BERT
+4367.08,style pre-training on an
+4368.8,enormous corpus before
+4370.32,transferring to these additional
+4371.639999999999,tasks. So this is a really
+4374.96,compelling demonstration of
+4376.16,transfer learning. And the key
+4378.639999999999,insight with BERT is that
+4381.84,transfer needs to take place
+4384.08,throughout the weights of a
+4385.04,large network.
+4385.8,Previous attempts to do this
+4387.72,involve transfer just at the
+4389.400000000001,level of those specific word
+4390.84,"embedding weights, which could"
+4392.76,encode the information relevant
+4395.04,to each individual word and
+4396.6,model's vocabulary. But they
+4398.04,didn't have a mechanism to
+4399.68,encode the ways in which those
+4402.08,"words combine. Now, a few years"
+4405.2,"before BERT, a model called"
+4407.28,Elmo and a couple of other
+4408.96,models started to show that
+4410.6,there was some promise in
+4411.68,sharing more than just those
+4413.12,"word embedding weights, but"
+4414.72,actually sharing a large amount
+4417.04,of functions which learn to
+4419.0,combine weights when
+4421.12,pre-trained on some task
+4422.56,agnostic objective and
+4424.4400000000005,transferred to specific tasks.
+4426.0,And then the BERT model really
+4427.16,"took that to the next level,"
+4429.4800000000005,using the machinery of the
+4430.84,transformer to exhibit really
+4432.52,impressive transfer learning. So
+4435.400000000001,we've now acquired five
+4437.56,interesting principles of how a
+4440.84,language and meaning seem to
+4442.08,interact when we understand the
+4443.16,sentence. And we've added this
+4445.44,"fifth one, understanding is"
+4447.16,balancing input with knowledge
+4449.44,"that we've had already, or our"
+4451.44,general knowledge of the world.
+4452.84,And we've talked about BERT as
+4454.16,a mechanism for endowing models
+4457.5599999999995,with something like a general
+4459.68,knowledge that may be necessary.
+4462.4,"And we've shown that in fact,"
+4465.24,"indeed, it is very important on"
+4467.5199999999995,a lot of language understanding
+4468.599999999999,tasks to have this sort of prior
+4470.4,knowledge acquired from a
+4471.48,massive range of different
+4474.48,experiences and different types
+4475.719999999999,"of texts. So in the next section,"
+4478.839999999999,we'll look a bit forward to
+4480.2,"other sources of information,"
+4481.919999999999,which may plausibly be useful
+4483.679999999999,for different language
+4484.28,"understanding models, because of"
+4485.879999999999,"course, BERT only has the means"
+4487.5599999999995,to acquire knowledge through
+4488.879999999999,text. Whereas if you think about
+4490.5599999999995,the fruit fly example or time
+4492.48,"flying like an arrow, those"
+4494.12,sorts of examples tell us that
+4495.599999999999,there are many other sources of
+4497.759999999999,information that we may have
+4499.96,used in order to gain the
+4501.84,general conceptual or world
+4504.44,knowledge required to actually
+4505.68,make sense of language.
+4507.32,"So in the last section, we saw"
+4509.08,how the BERT model is a really
+4511.4800000000005,exciting example of transferring
+4514.16,knowledge from an enormous
+4515.32,amount of text to apply that
+4518.08,knowledge to very specific
+4519.52,language tasks that maybe have a
+4521.08,small amount of data from which
+4522.52,to learn. And this works in part
+4526.68,because of the critical
+4528.0,importance of the
+4529.88,general knowledge in
+4532.0,understanding language. And that
+4534.72,we need ways in which models can
+4536.72,acquire general principles of
+4540.4800000000005,how language works and how word
+4543.0,meanings fit together in order
+4545.32,to make high quality
+4549.52,predictions for a range of
+4552.0,different language tasks. Now in
+4554.24,"this section, we're going to"
+4555.56,talk about further ways in which
+4557.88,we might be able to endow
+4559.32,models with general or
+4561.32,"conceptual knowledge, which they"
+4563.2,can then apply to language
+4565.639999999999,related tasks. And in
+4567.5199999999995,"particular, in a way that's not"
+4569.48,"accessible to the BERT model,"
+4571.28,which is the ability to extract
+4574.0,"knowledge, general knowledge and"
+4575.639999999999,conceptual knowledge from our
+4578.36,"surroundings, which is something"
+4579.92,as humans that we're doing all
+4581.48,"the time. Now, this is an"
+4587.04,opportune time to start thinking
+4589.4,about these challenges because
+4591.08,the tools available for these
+4593.4,sorts of unsupervised knowledge
+4595.72,extraction processes are
+4597.6,improving all the time. So as
+4599.32,well as the objective of mass
+4601.44,language modelling and next
+4602.8,sentence prediction that we saw
+4604.24,"with BERT, there's also exciting"
+4606.88,techniques in the field of
+4608.24,computer vision that often
+4610.68,involve things like missing
+4612.16,parts of an image and making
+4613.8,predictions about whether or not
+4616.2,that part of the image is the
+4618.48,correct part or of which pixels
+4621.08,would most appropriately fit in
+4622.92,"to that part of an image, or"
+4624.32,maybe contrasting incorrect
+4626.96,parts of images with correct
+4628.08,parts of images and things like
+4629.24,that. So those sorts of
+4630.639999999999,objectives are also leading to
+4633.48,really good ability to transfer
+4635.24,from large banks of images to
+4636.639999999999,specific image classification
+4638.4,"tasks. And of course, in the"
+4640.96,"world of learning, behaviour"
+4644.0,involves often really
+4645.6,reinforcement learning. On
+4647.400000000001,"those sorts of tasks, our"
+4648.56,techniques for having agents
+4650.400000000001,develop a more robust
+4653.200000000001,understanding of their
+4654.160000000001,surroundings and possibly what's
+4655.96,"known as a model of their world,"
+4658.280000000001,those techniques are also
+4659.4400000000005,"improving. So in DeepMind, we"
+4662.64,"thought it was the right time,"
+4664.280000000001,"given all of these improvements,"
+4665.88,to start to study this question
+4668.96,of knowledge acquisition through
+4670.64,prediction in an actual agent
+4672.72,that can interact in its
+4673.88,surroundings. But the idea of
+4676.32,knowledge acquisition through
+4677.28,prediction is actually a very
+4678.68,old one in neuroscience and
+4680.400000000001,psychology. So it goes back all
+4681.96,the way to the time of Helmholtz
+4683.76,and there's some very
+4684.56,influential papers you can see
+4686.08,in this slide that really
+4688.84,proposed and made clear the idea
+4691.4800000000005,that predicting what was about
+4693.4400000000005,to happen to an agent or an
+4695.2,organism was a very powerful way
+4697.96,of extracting knowledge and
+4699.4800000000005,structure about the world that
+4701.44,"surrounds that agent. Now, in"
+4705.48,"our case, we unfortunately can't"
+4707.44,set an enormous neural network
+4709.24,free in the world in which we
+4711.16,live and just see if it learns.
+4713.4,But the next best thing is to
+4715.24,create a simulated world. And we
+4716.919999999999,did that in the Unity game
+4718.48,engine. And the aim with this
+4720.599999999999,work was to study precisely
+4724.08,whether or not an agent which
+4725.36,moves around this world can
+4727.799999999999,apply various different
+4729.0,algorithms in order to acquire
+4731.0,as much knowledge as possible
+4733.04,from its environment. But in
+4734.6,"particular, in a slight"
+4736.84,difference to other work on this
+4738.52,"sort of topic, we were interested"
+4741.24,in whether or not this knowledge
+4743.04,"would be language relevant, i.e."
+4745.64,whether or not this knowledge
+4746.56,would be knowledge which could
+4747.64,serve the agent's ability to
+4749.8,understand or use language. And
+4752.72,the way we did that was as well
+4754.76,as creating loads of random
+4756.28,rooms with different objects
+4757.68,positioned in different places
+4759.0,in this simulation. We also
+4761.6,created a bunch of questions
+4763.8,such that for any random room
+4765.28,"that was created, the agent"
+4767.8,could find in the environment
+4769.72,questions which could plausibly
+4771.92,be answered. So examples of the
+4774.36,sorts of questions we asked are
+4775.4,"things like, what is the colour"
+4776.76,of the table? What is the shape
+4778.84,of the red object? How many
+4780.96,rubber ducks are there in the
+4782.2,room? Is there a teddy bear
+4784.2,somewhere? And even comparison
+4786.84,questions like things like
+4788.44,is the number of rubber ducks
+4789.719999999999,bigger than the number of toy
+4791.24,sheep? So those are the sorts of
+4792.96,"questions. And importantly,"
+4794.5199999999995,being able to answer these
+4795.5599999999995,questions requires a particular
+4796.919999999999,"type of knowledge, that's"
+4798.2,"propositional knowledge, the"
+4799.679999999999,"knowledge, the ability to tell"
+4801.12,whether something's true or
+4802.2,false in our environment. And
+4803.919999999999,"that's often contrasted,"
+4805.4,"especially by philosophers, with"
+4807.48,"procedural knowledge, which is"
+4809.04,just the sort of instinctive
+4810.4,knowledge that maybe a
+4811.5599999999995,reinforcement learning agent
+4813.08,would naturally have when it
+4814.919999999999,learns to solve control problems
+4817.0,in a very fast and precise way.
+4819.4,So this is a different type of
+4820.6,problem than what's typically
+4821.96,faced by agents which are
+4824.0,trained with reinforcement
+4825.2,learning. So in order to think
+4830.32,about how we could develop
+4831.8,algorithms to aggregate this
+4833.12,sorts of knowledge as an agent
+4834.52,"explores its surroundings, we"
+4836.12,first just gave the agent a
+4838.16,policy which meant that it
+4839.32,visited all of the things in the
+4840.88,room a little bit. So that
+4842.28,essentially creates a video of
+4843.84,experience and then we set up
+4846.52,learning model the challenge of
+4849.320000000001,taking in that experience and
+4852.0,aggregating knowledge as much as
+4853.96,possible in the memory state of
+4855.400000000001,the agent as it lives that
+4857.120000000001,experience. And then the way
+4859.400000000001,that we measure the quality of
+4860.68,that knowledge is by bolting on
+4863.080000000001,a QA decoder onto the agent. And
+4866.360000000001,that's the part of the model
+4868.0,which is going to actually
+4869.080000000001,produce the answer to the
+4870.88,questions when fed with the
+4872.92,current memory state of the
+4874.2,agent and the particular
+4876.5599999999995,"question. So as an example, the"
+4878.92,agent might explore a room with
+4880.679999999999,a yellow teddy bear and a red
+4882.599999999999,sheep and a large table and
+4885.2,then a small toy dinosaur under
+4888.4,the table. And the environment
+4892.639999999999,"might present the question, what"
+4894.96,is the toy that's under the
+4896.2,table? Now the agent would
+4898.679999999999,explore and the agent's learning
+4900.36,algorithm can take in all of the
+4901.72,things it sees as it moves
+4902.96,around the room. But the agent
+4905.92,"has, like, it can't, the agent"
+4910.52,itself can't see the question.
+4912.44,"So the agent just has to, the"
+4914.68,learning algorithm just has to
+4915.88,find a way based on the
+4916.96,experience to aggregate general
+4919.96,knowledge into the agent such
+4922.52,"that when the question, the QA"
+4924.24,decoder is queued with the state
+4926.76,of the agent at the end of the
+4928.4800000000005,episode and queued with the
+4930.28,"question, it's possible that"
+4932.6,people to combine those two
+4934.240000000001,pieces of knowledge and answer
+4936.04,with dinosaur. So to do this
+4938.72,"effectively, the agent needs a"
+4940.84,large amount of general
+4942.08,knowledge about how things are
+4943.84,arranged in the environment
+4946.120000000001,"around it, such that the QA"
+4947.84,decoder can take that knowledge
+4950.120000000001,and make predictions about the
+4952.52,answers to questions. It's very
+4954.92,important detail that we do not
+4956.6,back propagate from the answer
+4957.92,to the question back into the
+4959.72,QA. So the weights in the agent
+4963.08,and the objectives that the
+4964.2,agents applying must be general.
+4965.84,They can't be specifically
+4967.320000000001,tailored to getting the
+4968.56,knowledge to answer the
+4969.360000000001,"question. Instead, it must be a"
+4972.72,process of aggregating
+4974.0,throughout this episode such
+4975.240000000001,"that at the end of the episode,"
+4976.4800000000005,the agent's memory is as
+4977.92,knowledgeable as possible. And
+4980.320000000001,"then to this, we apply various"
+4982.08,different baselines. So the
+4983.16,obvious baseline is just an LSTM
+4985.4800000000005,or any sort of recurrent agent.
+4988.400000000001,Much more complicated to apply
+4989.52,"this in this context, because of"
+4991.160000000001,course we can't see the whole
+4993.080000000001,episode at once. As we're moving
+4994.72,"through the world, we can only"
+4995.76,see time steps up to the current
+4997.320000000001,"time step. Now, another approach"
+5001.360000000001,is to endow the agent with
+5003.92,"predictive learning objectives,"
+5005.96,a little bit like the sorts of
+5007.240000000001,mass language model prediction
+5008.68,"that Bert's making, but where"
+5010.4800000000005,"the agent has to, given a"
+5012.280000000001,certain time point in the
+5013.400000000001,"episode, a predictive loss, a"
+5017.0,"predictive engine, an overshoot"
+5018.76,"engine, takes the current memory"
+5020.76,state of the agent at that time
+5022.24,point and rolls forward in time.
+5026.360000000001,Once the agent has finally
+5029.52,"experienced the episode, we can"
+5031.64,then do some learning where we
+5033.4400000000005,compare the prediction of that
+5035.0,predictive loss to what the
+5036.4400000000005,agent actually encounters. And
+5039.400000000001,"importantly, the predictive loss"
+5041.04,can also take into account the
+5042.4400000000005,action that the agent chose to
+5043.8,take in each of those time
+5044.88,steps. So these are kind of
+5046.56,"action, conditional, overshoot"
+5048.44,unrolls where we see what the
+5051.5199999999995,agent actually encountered in
+5052.799999999999,the future and then update the
+5055.0,weights of the agent such that
+5057.639999999999,they're better able to make
+5058.839999999999,these sorts of predictions. And
+5060.839999999999,we tried two specific
+5062.44,"algorithms. So in one case, in"
+5064.759999999999,"the sim core algorithm, which"
+5066.44,"was proposed last year, the loss"
+5069.919999999999,that's used in this predictive
+5071.32,mechanism is a generative model
+5073.48,"loss, which is modelling each of"
+5076.32,the individual pixels in the
+5078.12,observations that the agent sees
+5079.76,in the world in future time
+5081.16,steps. And in the other
+5083.64,"predictive objective, we use"
+5086.16,contrastive predictive coding.
+5088.16,This is basically asking the
+5090.5199999999995,model to distinguish or
+5093.16,presenting the model with two
+5094.32,images at a given time step and
+5096.32,asking the model to say which of
+5097.599999999999,those two is actually the one
+5099.8,the agent encounters in the
+5101.04,"future, as opposed to one which"
+5103.5199999999995,is selected randomly from some
+5104.92,other episode. Now we can
+5111.32,evaluate these sorts of
+5112.4,predictive mechanisms for
+5113.52,aggregating knowledge in the
+5114.64,agent precisely by their ability
+5117.28,to create knowledge in the
+5118.76,"memory state of the agent, such"
+5119.96,that at the final time step of
+5121.2,"every episode, the question"
+5122.84,answering decoder can take that
+5124.52,knowledge and answer the question.
+5126.68,What we found surprisingly is
+5128.4400000000005,that only one of these
+5129.36,predictive algorithms actually
+5131.08,led to the agent being able to
+5133.0,effectively answer questions.
+5134.36,"And that was the SIMCOP, the"
+5135.799999999999,model which uses a generative
+5138.0,model to estimate the
+5140.599999999999,probability density of pixels in
+5143.16,future observations of the model
+5145.679999999999,conditioned on the memory state
+5146.88,further back in time. So the
+5148.88,contrastive predictive algorithm
+5151.2,was much less effective at
+5152.719999999999,giving the agent the general
+5153.799999999999,knowledge required to be able to
+5155.5199999999995,answer these questions. The
+5157.24,green line at the top of the
+5158.28,plot here shows the performance
+5159.88,of the agent if you back
+5161.16,propagate from the question
+5162.44,answers back into the actual
+5165.12,"agent memory. So by doing that,"
+5167.4,you allow the agent to
+5168.32,specialise in a particular type
+5170.08,"of question for every episode,"
+5171.719999999999,rather than requiring it to
+5172.879999999999,build up knowledge in a general
+5174.08,way. But you can see that that
+5175.599999999999,makes the agent much more
+5176.599999999999,effective at answering these
+5177.719999999999,questions. To give us some
+5180.5599999999995,flavour of exactly what the
+5181.719999999999,"agent does, here's a video. You"
+5183.96,"can see the question is, what is"
+5185.32,the colour of the pencil? And
+5187.12,you can see that as the episode
+5188.5199999999995,"continues, the agent's"
+5189.639999999999,prediction gets more and more
+5190.92,confident that the answer is
+5192.56,red. Such that on the final
+5195.6,"time step, red is by far the"
+5197.64,most probable answer. If we
+5199.96,"consider the other video, let me"
+5204.8,"just activate the other video,"
+5209.2,you can see that a similar thing
+5210.36,happens with a different type of
+5211.4,question. So here the question
+5214.0,"is, what is the aquamarine"
+5215.4800000000005,object? And the answer is it's a
+5217.4400000000005,"grinder, it's a salt or pepper"
+5218.6,"grinder. And again, the agent's"
+5220.52,confidence is very strong at the
+5222.4800000000005,"end, but we observed these sorts"
+5226.080000000001,of effects only in the agent
+5227.320000000001,which was endowed with the same
+5228.52,core model of predicting the
+5230.240000000001,"probabilities of pixels, future"
+5232.200000000001,observations conditioned on the
+5233.56,actions that it took at
+5235.6,arbitrary overshoots into the
+5236.88,future. So that's just a small
+5241.56,insight into work that's going
+5242.92,"on in DeepMind, where we're"
+5244.4800000000005,starting to consider how we can
+5245.96,aggregate knowledge from the
+5247.280000000001,"general environment, as well as"
+5249.040000000001,knowledge from large amounts of
+5250.32,"text into a single model, which"
+5252.84,can start to combine this sort
+5254.2,of conceptual understanding and
+5256.04,general knowledge understanding
+5257.84,and a really strong understanding
+5260.04,of language into a single agent
+5262.2,which can come up with a
+5263.0,coherent and strong ability to
+5265.5599999999995,form the meaning of statements
+5267.599999999999,and sentences. And also to take
+5270.96,that knowledge to answer
+5271.92,"questions, to produce language"
+5273.679999999999,"and to enact policies, enabling"
+5275.799999999999,it to do things in complex
+5277.44,environments. So we've reached
+5281.44,the end of the lecture and I
+5284.599999999999,just thought we'd go back and
+5285.879999999999,reflect a little bit quickly on
+5287.759999999999,the various things that we've
+5289.08,covered. So we've talked about
+5290.96,various aspects of language
+5293.24,which make neural networks and
+5296.639999999999,deep networks particularly
+5298.48,appropriate models for capturing
+5302.48,the way that meaning works. So
+5304.4,"in particular, we raised the"
+5305.5199999999995,fact that words are not
+5307.04,"discrete symbols, but they"
+5308.08,actually almost always have some
+5310.2,sense of different related
+5311.6,senses. But disambiguation is a
+5314.24,huge part of understanding
+5315.68,language and then that can
+5317.28,critically depend very often on
+5318.76,context. We've talked about the
+5320.4,facts that that context can be
+5321.84,non-local. So to do with the
+5325.68,work we're currently thinking
+5326.6,"about, that context can also be"
+5328.28,very non-linguistic. It can
+5330.2,depend very much on what we're
+5331.32,currently seeing and doing. The
+5333.84,"notion of composition, we've"
+5335.28,reflected on the fact that that
+5336.96,in itself seems to vary
+5338.84,depending on what the words are
+5340.6,that are being combined in any
+5342.32,one instance. And we've talked
+5344.08,about the importance of
+5344.96,background knowledge and ways to
+5346.24,acquire that. So one way that we
+5348.64,talked about was BERT and
+5350.16,unsupervised learning from text.
+5352.24,And another way was through
+5353.88,predictive objectives in a
+5356.08,situated agent. And so if we
+5361.12,look at these features and these
+5362.44,"aspects of language, the"
+5364.12,mechanisms that I've discussed
+5365.84,"today, cover them reasonably"
+5368.04,"well, and hopefully they shed"
+5369.6,some light on why neural
+5371.84,networks and interactive
+5373.4400000000005,processing architectures that
+5375.08,have been the sort of
+5375.84,differentials of neural
+5377.04,computation and distributed
+5378.96,representations are particularly
+5381.16,effective for language
+5382.6,"processing. But of course, it"
+5385.6,should be said that there are
+5386.400000000001,many aspects of language
+5387.52,processing that the work I've
+5388.68,talked about just doesn't start
+5390.24,"to approximate, doesn't start to"
+5393.76,capture. And that's in
+5395.88,particular around a lot of the
+5397.4800000000005,social aspects of language
+5399.56,understanding. So our models are
+5401.64,not currently able to do things
+5403.24,like understanding the
+5404.04,intentions of others or
+5405.72,reflecting on how language is
+5408.360000000001,used to communicate and do
+5409.6,"things. And, you know, we need"
+5412.92,to make a lot more progress in
+5414.12,these areas if we're actually
+5415.280000000001,going to arrive at agents which
+5417.320000000001,are truly able to understand
+5419.08,"language. So yeah, just as a"
+5422.76,"final note, I think it's"
+5424.320000000001,interesting that before deep
+5426.280000000001,learning really exhibited its
+5427.76,success on language processing
+5429.24,"problems, a typical view of"
+5430.92,language understanding was what
+5432.16,"I call the pipeline view, which"
+5433.96,"was that each independent, each"
+5435.88,part of processing language from
+5438.0,"the letters to the words, to the"
+5439.52,"syntax and to the meaning, and"
+5441.4800000000005,then eventually to some
+5442.4800000000005,prediction could be thought of
+5444.04,relatively independently as a
+5445.84,separate process. But now that
+5448.88,we've reflected on how language
+5450.2,works and in particular taken in
+5452.04,all of the evidence from the
+5453.2,effectiveness of different
+5454.64,neural language models on
+5455.76,"language processing tasks, I"
+5457.68,think maybe this is a more
+5458.72,effective or more realistic
+5460.56,schematic of how language
+5462.04,processing should be thought of.
+5463.84,"So we may have some stimuli,"
+5465.4,"some letters or sounds, and"
+5467.08,we've always got some sort of
+5468.48,context around those letters or
+5470.12,sounds. Those two things input
+5472.08,"to our system, but critically"
+5474.44,it's that input combined with
+5476.64,our general background knowledge
+5478.24,of the world and knowledge of
+5479.28,"language, which together allow"
+5481.2,us to arrive at some sort of
+5483.48,plausible meaning for everything
+5485.2,that we hear or everything that
+5486.72,"we might say. So on that, we'll"
+5492.48,finish up. Thanks very much for
+5494.0,your time. There's some
+5495.4,selected references here and
+5497.4,"many other references, which I"
+5498.76,"didn't, I don't have time to"
+5499.8,"list here, but have been hugely"
+5501.24,inspirational for the work that
+5503.08,I think that I've talked about
+5504.16,today. At the end I've popped a
+5506.16,few there for recent work at
+5507.639999999999,"DeepMind. But again, there's no"
+5510.04,time to list a huge amount of
+5511.68,"very related work. So anyway, I"
+5514.68,hope you've enjoyed this lecture
+5516.32,and it's given you some insight
+5517.72,into why language and language
+5519.32,understanding is such an
+5520.64,interesting problem for
+5521.92,computational models to try and
+5524.44,tackle. And I hope that you've
+5528.16,enjoyed the talk and you'll
+5530.88,enjoy the following lectures on
+5532.56,the DeepMind lecture series.
+5534.48,Thank you very much.
